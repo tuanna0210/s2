@@ -1,0 +1,69 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" />
+    <title>SSO System</title>
+    <link href="~/Resources/css/main" rel="stylesheet" type="text/css" />
+
+    <!--[if IE 8]><link href="css/ie8.css" rel="stylesheet" type="text/css" /><![endif]-->
+    @*<link href='http://fonts.googleapis.com/css?family=Open+Sans:400,600,700' rel='stylesheet' type='text/css'>*@
+    @*<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>*@
+    <script src="~/Resources/js/jquery.min.js"></script>
+    @*<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.9.2/jquery-ui.min.js"></script>*@
+    <script src="~/Resources/js/jquery-ui.min.js"></script>
+    <script type="text/javascript" src="~/Resources/js/plugins/charts/jquery.sparkline.min.js"></script>
+    <script type="text/javascript" src="~/Resources/js/plugins/ui/jquery.easytabs.min.js"></script>
+    <script type="text/javascript" src="~/Resources/js/plugins/ui/jquery.collapsible.min.js"></script>
+    <script type="text/javascript" src="~/Resources/js/plugins/ui/jquery.bootbox.min.js"></script>
+    <script type="text/javascript" src="~/Resources/js/plugins/ui/jquery.timepicker.min.js"></script>
+    <script type="text/javascript" src="~/Resources/js/plugins/ui/jquery.fullcalendar.min.js"></script>
+    <script type="text/javascript" src="~/Resources/js/plugins/forms/jquery.uniform.min.js"></script>
+    <script type="text/javascript" src="~/Resources/js/plugins/forms/jquery.inputlimiter.min.js"></script>
+    <script type="text/javascript" src="~/Resources/js/plugins/forms/jquery.tagsinput.min.js"></script>
+    <script type="text/javascript" src="~/Resources/js/plugins/forms/jquery.select2.min.js"></script>
+    <script src="~/Resources/js/plugins/forms/jquery"></script>
+
+    <script type="text/javascript" src="~/Resources/js/plugins/tables/jquery.dataTables.min.js"></script>
+    <script type="text/javascript" src="~/Resources/js/files/bootstrap.min.js"></script>
+    <script type="text/javascript" src="~/Resources/js/files/functions.js"></script>
+    <script src="~/ckeditor/ckeditor.js"></script>
+    <script src="~/Resources/js/jquery.treeview.js"></script>
+</head>
+<body>
+    <!-- Fixed top -->
+    @{var _User = (User as MvcAuthenication.UserPrincipal);}
+    <div id="top">
+        <div class="fixed">
+            <a href="index.html" title="" class="logo"><img src="~/Resources/img/logo.png" alt="" /></a>
+            <ul class="top-menu">
+                <li class="dropdown">
+                    <a class="user-menu" data-toggle="dropdown"><img src="@_User.Avatar" alt="" /><span>@User.Identity.Name<b class="caret"></b></span></a>
+                    <ul class="dropdown-menu">
+                        <li><a href="/Account/Logout" title=""><i class="icon-remove"></i>Đăng xuất</a></li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <!-- /fixed top -->
+    <!-- Content container -->
+    <div id="container">
+        <div id="content">
+            <!-- Content wrapper -->
+            <div class="wrapper">
+                <input type="hidden" id="txtSearch" />
+                @RenderBody()
+            </div>
+            <!-- /content wrapper -->
+        </div>
+        <!-- /content -->
+    </div>
+    <!-- /content container -->
+    <!-- Footer -->
+    <div id="footer">
+        <div class="copyrights">SSO System 2016.</div>
+    </div>
+    <!-- /footer -->
+</body>
+</html>

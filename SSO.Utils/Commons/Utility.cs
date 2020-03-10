@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
 namespace SSO.Utils
@@ -71,19 +72,18 @@ namespace SSO.Utils
         //    return string.Empty;
         //}
 
-        //temp
-        //public static int GetNumber(string input)
-        //{
-        //    try
-        //    {
-        //        return Convert.ToInt32(Regex.Replace(input, "\\D", string.Empty));
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        LogMan.Instance.WriteErrorToLog(ex);
-        //        return 0;
-        //    }
-        //}
+        public static int GetNumber(string input)
+        {
+            try
+            {
+                return Convert.ToInt32(Regex.Replace(input, "\\D", string.Empty));
+            }
+            catch (Exception ex)
+            {
+                LogMan.Instance.WriteErrorToLog(ex);
+                return 0;
+            }
+        }
 
         /// <summary>
         /// Chuyển danh sách từ xâu sang mảng int.
@@ -377,46 +377,44 @@ namespace SSO.Utils
         //    return Unicode;
         //}
 
-        //temp
-        //public static string ConvertLink(string input, string ch, string ext)
-        //{
-        //    try
-        //    {
-        //        if (string.IsNullOrEmpty(input))
-        //        {
-        //            return "";
-        //        }
-        //        input = RemoveUnicode(ChuanHoaChuoi(input));
-        //        input = System.Text.RegularExpressions.Regex.Replace(input, @"[^\w\.@-]", ch) + ext;
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        LogMan.Instance.WriteErrorToLog(ex);
-        //    }
-        //    return input;
-        //}
+        public static string ConvertLink(string input, string ch, string ext)
+        {
+            try
+            {
+                if (string.IsNullOrEmpty(input))
+                {
+                    return "";
+                }
+                input = RemoveUnicode(ChuanHoaChuoi(input));
+                input = System.Text.RegularExpressions.Regex.Replace(input, @"[^\w\.@-]", ch) + ext;
+            }
+            catch (Exception ex)
+            {
+                LogMan.Instance.WriteErrorToLog(ex);
+            }
+            return input;
+        }
 
-        //temp
-        //public static string ChuanHoaChuoi(string input)
-        //{
-        //    try
-        //    {
-        //        if (string.IsNullOrEmpty(input))
-        //        {
-        //            return string.Empty;
-        //        }
-        //        input = input.Trim();
-        //        while (input.IndexOf("  ") != -1)
-        //        {
-        //            input = input.Replace("  ", " ");
-        //        }
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        LogMan.Instance.WriteErrorToLog(ex);
-        //    }
-        //    return input;
-        //}
+        public static string ChuanHoaChuoi(string input)
+        {
+            try
+            {
+                if (string.IsNullOrEmpty(input))
+                {
+                    return string.Empty;
+                }
+                input = input.Trim();
+                while (input.IndexOf("  ") != -1)
+                {
+                    input = input.Replace("  ", " ");
+                }
+            }
+            catch (Exception ex)
+            {
+                LogMan.Instance.WriteErrorToLog(ex);
+            }
+            return input;
+        }
 
         private static string charLower = "aAeEoOuUiIdDyY";
         private static string aLower = "áàạảãâấầậẩẫăắằặẳẵ";
