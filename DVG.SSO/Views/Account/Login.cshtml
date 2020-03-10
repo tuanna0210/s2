@@ -1,0 +1,46 @@
+﻿@using DVG.SSO.Ultility;
+@{
+                /**/
+
+                ViewBag.Title = "login";
+                Layout = "~/Views/Shared/_BaseAcount.cshtml";
+}
+@model MvcAuthenication.SystemUserLoginItem
+<div class="login">
+    <div class="navbar">
+        <div class="navbar-inner">
+            <h6><i class="icon-user"></i>Login page</h6>
+        </div>
+    </div>
+    <div class="well">
+        @using (Html.BeginForm("Login/", "Account", FormMethod.Post, new { @class = "row-fluid" }))
+        {
+            @Html.EditorFor(model => model.UserName)
+            @Html.EditorFor(model => model.Password)
+
+            <div class="control-group">
+                <div id="divCaptCha"><img src="~/Account/Captcha/?prefix=Captcha" id="imgCaptcha" /></div>
+                <div class="controls"><input class="span12" type="text" name="Captcha" placeholder="Nhập kết quả" id="Captcha" /></div>
+            </div>
+            <div class="control-group">
+                <label class="control-label">Ngôn ngữ:</label>
+                <div class="controls">
+                    @Html.DropDownListFor(model => model.Languague, new SelectList(TypeData.lstCulture, "ID", "Name"), new { @class = "span12" })
+                </div>
+            </div>
+            @Html.EditorFor(model => model.Remember)
+            <div class="login-btn"><button type="submit" id="btnLogin" class="btn btn-danger btn-block">Log me in</button></div>
+            <span id="lblMessage"></span>
+        }
+    </div>
+</div>
+
+<script>
+    $(document).keypress(function (event) {
+        var keycode = (event.keyCode ? event.keyCode : event.which);
+        if (keycode == '13') {
+            $('#btnLogin').click();
+        }
+    });
+</script>
+

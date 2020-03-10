@@ -1,0 +1,1102 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="CmsModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="base_Categories_Position">
+          <Key>
+            <PropertyRef Name="PositionCategoryID" />
+            <PropertyRef Name="CategoryID" />
+          </Key>
+          <Property Name="PositionCategoryID" Type="int" Nullable="false" />
+          <Property Name="CategoryID" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="base_Category_TypeCategory">
+          <Key>
+            <PropertyRef Name="TypeCategoryID" />
+            <PropertyRef Name="CategoryID" />
+          </Key>
+          <Property Name="TypeCategoryID" Type="int" Nullable="false" />
+          <Property Name="CategoryID" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="base_DyinamicFieldsValue">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="256" Nullable="false" />
+          <Property Name="AbbreviationName" Type="nvarchar" MaxLength="256" Nullable="false" />
+          <Property Name="Description" Type="nvarchar" MaxLength="256" />
+          <Property Name="DynamicFieldID" Type="int" Nullable="false" />
+          <Property Name="Order" Type="int" Nullable="false" />
+          <Property Name="Active" Type="bit" Nullable="false" />
+          <Property Name="CreatedDate" Type="datetime" Nullable="false" />
+          <Property Name="LastUpdatedDate" Type="datetime" Nullable="false" />
+          <Property Name="CreatedUser" Type="int" Nullable="false" />
+          <Property Name="LastUpdatedUser" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="base_DynamicFieldGroups">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="256" Nullable="false" />
+        </EntityType>
+        <EntityType Name="base_DynamicFields">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="256" Nullable="false" />
+          <Property Name="AbbreviationName" Type="nvarchar" MaxLength="256" Nullable="false" />
+          <Property Name="Order" Type="int" Nullable="false" />
+          <Property Name="MultiValues" Type="bit" Nullable="false" />
+          <Property Name="Active" Type="bit" Nullable="false" />
+          <Property Name="FuntionsID" Type="int" Nullable="false" />
+          <Property Name="Required" Type="bit" Nullable="false" />
+          <Property Name="IsCheckBox" Type="bit" Nullable="false" />
+          <Property Name="Description" Type="nvarchar" MaxLength="256" />
+          <Property Name="CreatedDate" Type="datetime" Nullable="false" />
+          <Property Name="LastUpdatedDate" Type="datetime" Nullable="false" />
+          <Property Name="ApplicationId" Type="uniqueidentifier" />
+          <Property Name="DynamicFieldGroupsID" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="base_Language">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Code" Type="nvarchar" MaxLength="10" Nullable="false" />
+          <Property Name="Description" Type="nvarchar" MaxLength="256" />
+          <Property Name="Status" Type="bit" Nullable="false" />
+        </EntityType>
+        <EntityType Name="base_Log">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="LogType" Type="int" Nullable="false" />
+          <Property Name="CreateUser" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="LogTime" Type="datetime" Nullable="false" />
+          <Property Name="IPAddress" Type="nvarchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="base_PositionCategory">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="256" Nullable="false" />
+        </EntityType>
+        <EntityType Name="base_TypeCategory">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="256" Nullable="false" />
+          <Property Name="CssClass" Type="nvarchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="base_UserProfile">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'SSO_RealData.dbo.cms_Applications' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="cms_Applications">
+          <Key>
+            <PropertyRef Name="ApplicationName" />
+            <PropertyRef Name="LoweredApplicationName" />
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ApplicationName" Type="nvarchar" MaxLength="256" Nullable="false" />
+          <Property Name="LoweredApplicationName" Type="nvarchar" MaxLength="256" Nullable="false" />
+          <Property Name="ID" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="Description" Type="nvarchar" MaxLength="256" />
+        </EntityType>
+        <EntityType Name="cms_Client">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="256" Nullable="false" />
+          <Property Name="Title" Type="nvarchar" MaxLength="256" Nullable="false" />
+          <Property Name="Type" Type="nvarchar" MaxLength="10" />
+          <Property Name="Domain" Type="nvarchar" MaxLength="256" />
+          <Property Name="Token" Type="nvarchar" MaxLength="50" />
+          <Property Name="Active" Type="bit" Nullable="false" />
+          <Property Name="Order" Type="int" Nullable="false" />
+          <Property Name="ParentID" Type="int" Nullable="false" />
+          <Property Name="CreatedUser" Type="int" Nullable="false" />
+          <Property Name="LastUpdatedUser" Type="int" Nullable="false" />
+          <Property Name="CreatedDate" Type="datetime" Nullable="false" />
+          <Property Name="LastUpdatedDate" Type="datetime" Nullable="false" />
+        </EntityType>
+        <EntityType Name="cms_Funtions">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" Nullable="false" />
+          <Property Name="ApplicationId" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="256" Nullable="false" />
+        </EntityType>
+        <EntityType Name="cms_GroupRoleCategory">
+          <Key>
+            <PropertyRef Name="GroupRoleID" />
+            <PropertyRef Name="CategoryID" />
+          </Key>
+          <Property Name="GroupRoleID" Type="int" Nullable="false" />
+          <Property Name="CategoryID" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="cms_GroupRoles">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="256" Nullable="false" />
+          <Property Name="Description" Type="nvarchar" MaxLength="256" />
+          <Property Name="ParentID" Type="int" Nullable="false" />
+          <Property Name="Active" Type="bit" Nullable="false" />
+          <Property Name="IsDepartment" Type="bit" />
+          <Property Name="Order" Type="int" Nullable="false" />
+          <Property Name="AllChildrent" Type="nchar" MaxLength="256" />
+          <Property Name="CreatedUser" Type="int" Nullable="false" />
+          <Property Name="LastUpdatedUser" Type="int" Nullable="false" />
+          <Property Name="CreatedDate" Type="datetime" Nullable="false" />
+          <Property Name="LastUpdatedDate" Type="datetime" Nullable="false" />
+        </EntityType>
+        <EntityType Name="cms_GroupRoles_Roles">
+          <Key>
+            <PropertyRef Name="GroupRolesID" />
+            <PropertyRef Name="RolesID" />
+          </Key>
+          <Property Name="GroupRolesID" Type="int" Nullable="false" />
+          <Property Name="RolesID" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="cms_Logs">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="LogType" Type="tinyint" />
+          <Property Name="LogDescription" Type="nvarchar(max)" />
+          <Property Name="LogPath" Type="nvarchar" MaxLength="512" />
+          <Property Name="UserID" Type="int" Nullable="false" />
+          <Property Name="LogTime" Type="datetime" />
+        </EntityType>
+        <EntityType Name="cms_Membership">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ApplicationId" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="UserName" Type="nchar" MaxLength="256" Nullable="false" />
+          <Property Name="Displayname" Type="nvarchar" MaxLength="256" Nullable="false" />
+          <Property Name="Gender" Type="nchar" MaxLength="10" />
+          <Property Name="Link" Type="nchar" MaxLength="100" />
+          <Property Name="Provider" Type="nchar" MaxLength="20" />
+          <Property Name="LoweredUserName" Type="nvarchar" MaxLength="256" Nullable="false" />
+          <Property Name="MobileAlias" Type="nvarchar" MaxLength="16" />
+          <Property Name="IsAnonymous" Type="bit" Nullable="false" />
+          <Property Name="Password" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="HashCode" Type="nvarchar" MaxLength="128" />
+          <Property Name="Email" Type="nvarchar" MaxLength="256" />
+          <Property Name="PasswordQuestion" Type="nvarchar" MaxLength="256" />
+          <Property Name="PasswordAnswer" Type="nvarchar" MaxLength="128" />
+          <Property Name="IsApproved" Type="bit" Nullable="false" />
+          <Property Name="IsLockedOut" Type="bit" Nullable="false" />
+          <Property Name="CreateDate" Type="datetime" Nullable="false" />
+          <Property Name="LastLoginDate" Type="datetime" Nullable="false" />
+          <Property Name="LastPasswordChangedDate" Type="datetime" Nullable="false" />
+          <Property Name="LastLockoutDate" Type="datetime" Nullable="false" />
+          <Property Name="FailedPasswordAttemptCount" Type="int" Nullable="false" />
+          <Property Name="ActivateCode" Type="nvarchar" MaxLength="128" />
+          <Property Name="Comment" Type="nvarchar(max)" />
+        </EntityType>
+        <EntityType Name="cms_Membership_GroupRole">
+          <Key>
+            <PropertyRef Name="MembershipID" />
+            <PropertyRef Name="GroupRoleId" />
+          </Key>
+          <Property Name="MembershipID" Type="int" Nullable="false" />
+          <Property Name="GroupRoleId" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="cms_Membership_Regency">
+          <Key>
+            <PropertyRef Name="MembershipID" />
+            <PropertyRef Name="RegencyID" />
+          </Key>
+          <Property Name="MembershipID" Type="int" Nullable="false" />
+          <Property Name="RegencyID" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="cms_Regency">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="256" Nullable="false" />
+          <Property Name="LoweredName" Type="nvarchar" MaxLength="256" Nullable="false" />
+          <Property Name="Description" Type="nvarchar" MaxLength="256" />
+          <Property Name="ApplicationId" Type="uniqueidentifier" Nullable="false" />
+        </EntityType>
+        <EntityType Name="cms_Regency_GroupRoles">
+          <Key>
+            <PropertyRef Name="RegencyID" />
+            <PropertyRef Name="GroupRolesID" />
+          </Key>
+          <Property Name="RegencyID" Type="int" Nullable="false" />
+          <Property Name="GroupRolesID" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="cms_Roles">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ApplicationId" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="ID" Type="int" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="256" Nullable="false" />
+          <Property Name="Code" Type="nvarchar" MaxLength="256" />
+          <Property Name="LoweredRoleName" Type="nvarchar" MaxLength="256" Nullable="false" />
+          <Property Name="Group" Type="nvarchar" MaxLength="50" />
+          <Property Name="Description" Type="nvarchar" MaxLength="256" />
+          <Property Name="ParentID" Type="int" />
+          <Property Name="Order" Type="int" Nullable="false" />
+          <Property Name="Parent" Type="int" />
+        </EntityType>
+        <EntityType Name="cms_UserClient">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="UserName" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="UserIDClient" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="ClientID" Type="int" Nullable="false" />
+          <Property Name="IsLogin" Type="bit" Nullable="false" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'SSO_RealData.dbo.vw_UserClientId' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="vw_UserClientId">
+          <Key>
+            <PropertyRef Name="UserName" />
+            <PropertyRef Name="UserIDClient" />
+          </Key>
+          <Property Name="UserId" Type="int" />
+          <Property Name="UserName" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="UserIDClient" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Domain" Type="nvarchar" MaxLength="256" />
+          <Property Name="Token" Type="nvarchar" MaxLength="50" />
+        </EntityType>
+        <Association Name="FK_cms_GroupRoles_Roles_cms_GroupRoles">
+          <End Role="cms_GroupRoles" Type="Self.cms_GroupRoles" Multiplicity="1" />
+          <End Role="cms_GroupRoles_Roles" Type="Self.cms_GroupRoles_Roles" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="cms_GroupRoles">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="cms_GroupRoles_Roles">
+              <PropertyRef Name="GroupRolesID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_cms_GroupRoles_Roles_cms_Roles">
+          <End Role="cms_Roles" Type="Self.cms_Roles" Multiplicity="1" />
+          <End Role="cms_GroupRoles_Roles" Type="Self.cms_GroupRoles_Roles" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="cms_Roles">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="cms_GroupRoles_Roles">
+              <PropertyRef Name="RolesID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_cms_Membership_GroupRole_cms_GroupRoles">
+          <End Role="cms_GroupRoles" Type="Self.cms_GroupRoles" Multiplicity="1" />
+          <End Role="cms_Membership_GroupRole" Type="Self.cms_Membership_GroupRole" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="cms_GroupRoles">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="cms_Membership_GroupRole">
+              <PropertyRef Name="GroupRoleId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Function Name="cms_UserClient_GetUserClientByUserName" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="UserName" Type="nvarchar" Mode="In" />
+        </Function>
+        <Function Name="cms_UserClient_UpdateByUserName" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="UserName" Type="nvarchar" Mode="In" />
+          <Parameter Name="IsLogin" Type="bit" Mode="In" />
+        </Function>
+        <Function Name="cms_UserSecretKey_GetByUserNameAndSecretKey" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="UserName" Type="nvarchar" Mode="In" />
+          <Parameter Name="SecretKey" Type="nvarchar" Mode="In" />
+        </Function>
+        <EntityContainer Name="CmsModelStoreContainer">
+          <EntitySet Name="base_Categories_Position" EntityType="Self.base_Categories_Position" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="base_Category_TypeCategory" EntityType="Self.base_Category_TypeCategory" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="base_DyinamicFieldsValue" EntityType="Self.base_DyinamicFieldsValue" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="base_DynamicFieldGroups" EntityType="Self.base_DynamicFieldGroups" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="base_DynamicFields" EntityType="Self.base_DynamicFields" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="base_Language" EntityType="Self.base_Language" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="base_Log" EntityType="Self.base_Log" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="base_PositionCategory" EntityType="Self.base_PositionCategory" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="base_TypeCategory" EntityType="Self.base_TypeCategory" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="base_UserProfile" EntityType="Self.base_UserProfile" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="cms_Client" EntityType="Self.cms_Client" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="cms_Funtions" EntityType="Self.cms_Funtions" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="cms_GroupRoleCategory" EntityType="Self.cms_GroupRoleCategory" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="cms_GroupRoles" EntityType="Self.cms_GroupRoles" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="cms_GroupRoles_Roles" EntityType="Self.cms_GroupRoles_Roles" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="cms_Logs" EntityType="Self.cms_Logs" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="cms_Membership" EntityType="Self.cms_Membership" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="cms_Membership_GroupRole" EntityType="Self.cms_Membership_GroupRole" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="cms_Membership_Regency" EntityType="Self.cms_Membership_Regency" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="cms_Regency" EntityType="Self.cms_Regency" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="cms_Regency_GroupRoles" EntityType="Self.cms_Regency_GroupRoles" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="cms_Roles" EntityType="Self.cms_Roles" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="cms_UserClient" EntityType="Self.cms_UserClient" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="cms_Applications" EntityType="Self.cms_Applications" store:Type="Tables" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [cms_Applications].[ApplicationName] AS [ApplicationName], 
+    [cms_Applications].[LoweredApplicationName] AS [LoweredApplicationName], 
+    [cms_Applications].[ID] AS [ID], 
+    [cms_Applications].[Description] AS [Description]
+    FROM [dbo].[cms_Applications] AS [cms_Applications]</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="vw_UserClientId" EntityType="Self.vw_UserClientId" store:Type="Views" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [vw_UserClientId].[UserId] AS [UserId], 
+    [vw_UserClientId].[UserName] AS [UserName], 
+    [vw_UserClientId].[UserIDClient] AS [UserIDClient], 
+    [vw_UserClientId].[Domain] AS [Domain], 
+    [vw_UserClientId].[Token] AS [Token]
+    FROM [dbo].[vw_UserClientId] AS [vw_UserClientId]</DefiningQuery>
+          </EntitySet>
+          <AssociationSet Name="FK_cms_GroupRoles_Roles_cms_GroupRoles" Association="Self.FK_cms_GroupRoles_Roles_cms_GroupRoles">
+            <End Role="cms_GroupRoles" EntitySet="cms_GroupRoles" />
+            <End Role="cms_GroupRoles_Roles" EntitySet="cms_GroupRoles_Roles" />
+          </AssociationSet>
+          <AssociationSet Name="FK_cms_GroupRoles_Roles_cms_Roles" Association="Self.FK_cms_GroupRoles_Roles_cms_Roles">
+            <End Role="cms_Roles" EntitySet="cms_Roles" />
+            <End Role="cms_GroupRoles_Roles" EntitySet="cms_GroupRoles_Roles" />
+          </AssociationSet>
+          <AssociationSet Name="FK_cms_Membership_GroupRole_cms_GroupRoles" Association="Self.FK_cms_Membership_GroupRole_cms_GroupRoles">
+            <End Role="cms_GroupRoles" EntitySet="cms_GroupRoles" />
+            <End Role="cms_Membership_GroupRole" EntitySet="cms_Membership_GroupRole" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="CmsModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityContainer Name="CMSEntities" annotation:LazyLoadingEnabled="true">
+          <FunctionImport Name="spGetListNews" ReturnType="Collection(CmsModel.spGetListNews_Result)">
+            <Parameter Name="PageNum" Mode="In" Type="Int32" />
+            <Parameter Name="PageSize" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <EntitySet Name="base_Categories_Position" EntityType="CmsModel.base_Categories_Position" />
+          <EntitySet Name="base_Category_TypeCategory" EntityType="CmsModel.base_Category_TypeCategory" />
+          <EntitySet Name="base_DyinamicFieldsValue" EntityType="CmsModel.base_DyinamicFieldsValue" />
+          <EntitySet Name="base_DynamicFieldGroups" EntityType="CmsModel.base_DynamicFieldGroups" />
+          <EntitySet Name="base_DynamicFields" EntityType="CmsModel.base_DynamicFields" />
+          <EntitySet Name="base_Language" EntityType="CmsModel.base_Language" />
+          <EntitySet Name="base_Log" EntityType="CmsModel.base_Log" />
+          <EntitySet Name="base_PositionCategory" EntityType="CmsModel.base_PositionCategory" />
+          <EntitySet Name="base_TypeCategory" EntityType="CmsModel.base_TypeCategory" />
+          <EntitySet Name="base_UserProfile" EntityType="CmsModel.base_UserProfile" />
+          <EntitySet Name="cms_Client" EntityType="CmsModel.cms_Client" />
+          <EntitySet Name="cms_Funtions" EntityType="CmsModel.cms_Funtions" />
+          <EntitySet Name="cms_GroupRoleCategory" EntityType="CmsModel.cms_GroupRoleCategory" />
+          <EntitySet Name="cms_GroupRoles" EntityType="CmsModel.cms_GroupRoles" />
+          <EntitySet Name="cms_Logs" EntityType="CmsModel.cms_Logs" />
+          <EntitySet Name="cms_Membership" EntityType="CmsModel.cms_Membership" />
+          <EntitySet Name="cms_Membership_Regency" EntityType="CmsModel.cms_Membership_Regency" />
+          <EntitySet Name="cms_Regency" EntityType="CmsModel.cms_Regency" />
+          <EntitySet Name="cms_Regency_GroupRoles" EntityType="CmsModel.cms_Regency_GroupRoles" />
+          <EntitySet Name="cms_Roles" EntityType="CmsModel.cms_Roles" />
+          <EntitySet Name="cms_Applications" EntityType="CmsModel.cms_Applications" />
+          <EntitySet Name="vw_UserClientId" EntityType="CmsModel.vw_UserClientId" />
+          <AssociationSet Name="cms_GroupRoles_Roles" Association="CmsModel.cms_GroupRoles_Roles">
+            <End Role="cms_GroupRoles" EntitySet="cms_GroupRoles" />
+            <End Role="cms_Roles" EntitySet="cms_Roles" />
+          </AssociationSet>
+          <AssociationSet Name="cms_Membership_GroupRole" Association="CmsModel.cms_Membership_GroupRole">
+            <End Role="cms_GroupRoles" EntitySet="cms_GroupRoles" />
+            <End Role="cms_Membership" EntitySet="cms_Membership" />
+          </AssociationSet>
+          <EntitySet Name="cms_UserClient" EntityType="CmsModel.cms_UserClient" />
+          <FunctionImport Name="cms_UserClient_GetUserClientByUserName" ReturnType="Collection(CmsModel.cms_UserClient_GetUserClientByUserName_Result)">
+            <Parameter Name="UserName" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="cms_UserClient_UpdateByUserName">
+            <Parameter Name="UserName" Mode="In" Type="String" />
+            <Parameter Name="IsLogin" Mode="In" Type="Boolean" />
+          </FunctionImport>
+          <FunctionImport Name="cms_UserSecretKey_GetByUserNameAndSecretKey">
+            <Parameter Name="UserName" Mode="In" Type="String" />
+            <Parameter Name="SecretKey" Mode="In" Type="String" />
+          </FunctionImport>
+          </EntityContainer>
+        <ComplexType Name="spGetListNews_Result">
+          <Property Type="Int32" Name="ID" Nullable="false" />
+          <Property Type="String" Name="Name" Nullable="false" MaxLength="256" />
+          <Property Type="String" Name="TextLink" Nullable="false" MaxLength="256" />
+          <Property Type="String" Name="ImageSrc" Nullable="true" MaxLength="256" />
+          <Property Type="String" Name="ImageDes" Nullable="true" MaxLength="256" />
+          <Property Type="String" Name="Content" Nullable="false" />
+          <Property Type="String" Name="MetaDes" Nullable="true" MaxLength="1000" />
+          <Property Type="String" Name="MetaKeyword" Nullable="true" MaxLength="256" />
+          <Property Type="String" Name="MetaTitle" Nullable="true" MaxLength="256" />
+          <Property Type="String" Name="LoweredUserName" Nullable="true" MaxLength="256" />
+          <Property Type="String" Name="TextLink1" Nullable="true" MaxLength="256" />
+          <Property Type="String" Name="TextLinkNoExt" Nullable="true" MaxLength="256" />
+        </ComplexType>
+        <EntityType Name="base_Categories_Position">
+          <Key>
+            <PropertyRef Name="PositionCategoryID" />
+            <PropertyRef Name="CategoryID" />
+          </Key>
+          <Property Name="PositionCategoryID" Type="Int32" Nullable="false" />
+          <Property Name="CategoryID" Type="Int32" Nullable="false" />
+        </EntityType>
+        <EntityType Name="base_Category_TypeCategory">
+          <Key>
+            <PropertyRef Name="TypeCategoryID" />
+            <PropertyRef Name="CategoryID" />
+          </Key>
+          <Property Name="TypeCategoryID" Type="Int32" Nullable="false" />
+          <Property Name="CategoryID" Type="Int32" Nullable="false" />
+        </EntityType>
+        <EntityType Name="base_DyinamicFieldsValue">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="256" FixedLength="false" Unicode="true" />
+          <Property Name="AbbreviationName" Type="String" Nullable="false" MaxLength="256" FixedLength="false" Unicode="true" />
+          <Property Name="Description" Type="String" MaxLength="256" FixedLength="false" Unicode="true" />
+          <Property Name="DynamicFieldID" Type="Int32" Nullable="false" />
+          <Property Name="Order" Type="Int32" Nullable="false" />
+          <Property Name="Active" Type="Boolean" Nullable="false" />
+          <Property Name="CreatedDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="LastUpdatedDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="CreatedUser" Type="Int32" Nullable="false" />
+          <Property Name="LastUpdatedUser" Type="Int32" Nullable="false" />
+        </EntityType>
+        <EntityType Name="base_DynamicFieldGroups">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="256" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="base_DynamicFields">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="256" FixedLength="false" Unicode="true" />
+          <Property Name="AbbreviationName" Type="String" Nullable="false" MaxLength="256" FixedLength="false" Unicode="true" />
+          <Property Name="Order" Type="Int32" Nullable="false" />
+          <Property Name="MultiValues" Type="Boolean" Nullable="false" />
+          <Property Name="Active" Type="Boolean" Nullable="false" />
+          <Property Name="FuntionsID" Type="Int32" Nullable="false" />
+          <Property Name="Required" Type="Boolean" Nullable="false" />
+          <Property Name="IsCheckBox" Type="Boolean" Nullable="false" />
+          <Property Name="Description" Type="String" MaxLength="256" FixedLength="false" Unicode="true" />
+          <Property Name="CreatedDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="LastUpdatedDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="ApplicationId" Type="Guid" />
+          <Property Name="DynamicFieldGroupsID" Type="Int32" Nullable="false" />
+        </EntityType>
+        <EntityType Name="base_Language">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Code" Type="String" Nullable="false" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="Description" Type="String" MaxLength="256" FixedLength="false" Unicode="true" />
+          <Property Name="Status" Type="Boolean" Nullable="false" />
+        </EntityType>
+        <EntityType Name="base_Log">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="LogType" Type="Int32" Nullable="false" />
+          <Property Name="CreateUser" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="LogTime" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="IPAddress" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="base_PositionCategory">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="256" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="base_TypeCategory">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="256" FixedLength="false" Unicode="true" />
+          <Property Name="CssClass" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="base_UserProfile">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+        </EntityType>
+        <EntityType Name="cms_Client">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="256" FixedLength="false" Unicode="true" />
+          <Property Name="Title" Type="String" Nullable="false" MaxLength="256" FixedLength="false" Unicode="true" />
+          <Property Name="Type" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="Domain" Type="String" MaxLength="256" FixedLength="false" Unicode="true" />
+          <Property Name="Token" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Active" Type="Boolean" Nullable="false" />
+          <Property Name="Order" Type="Int32" Nullable="false" />
+          <Property Name="ParentID" Type="Int32" Nullable="false" />
+          <Property Name="CreatedUser" Type="Int32" Nullable="false" />
+          <Property Name="LastUpdatedUser" Type="Int32" Nullable="false" />
+          <Property Name="CreatedDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="LastUpdatedDate" Type="DateTime" Nullable="false" Precision="3" />
+        </EntityType>
+        <EntityType Name="cms_Funtions">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" />
+          <Property Name="ApplicationId" Type="Guid" Nullable="false" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="256" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="cms_GroupRoleCategory">
+          <Key>
+            <PropertyRef Name="GroupRoleID" />
+            <PropertyRef Name="CategoryID" />
+          </Key>
+          <Property Name="GroupRoleID" Type="Int32" Nullable="false" />
+          <Property Name="CategoryID" Type="Int32" Nullable="false" />
+        </EntityType>
+        <EntityType Name="cms_GroupRoles">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="256" FixedLength="false" Unicode="true" />
+          <Property Name="Description" Type="String" MaxLength="256" FixedLength="false" Unicode="true" />
+          <Property Name="ParentID" Type="Int32" Nullable="false" />
+          <Property Name="Active" Type="Boolean" Nullable="false" />
+          <Property Name="IsDepartment" Type="Boolean" />
+          <Property Name="Order" Type="Int32" Nullable="false" />
+          <Property Name="AllChildrent" Type="String" MaxLength="256" FixedLength="true" Unicode="true" />
+          <Property Name="CreatedUser" Type="Int32" Nullable="false" />
+          <Property Name="LastUpdatedUser" Type="Int32" Nullable="false" />
+          <Property Name="CreatedDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="LastUpdatedDate" Type="DateTime" Nullable="false" Precision="3" />
+          <NavigationProperty Name="cms_Roles" Relationship="CmsModel.cms_GroupRoles_Roles" FromRole="cms_GroupRoles" ToRole="cms_Roles" />
+          <NavigationProperty Name="cms_Membership" Relationship="CmsModel.cms_Membership_GroupRole" FromRole="cms_GroupRoles" ToRole="cms_Membership" />
+        </EntityType>
+        <EntityType Name="cms_Logs">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="LogType" Type="Byte" />
+          <Property Name="LogDescription" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="LogPath" Type="String" MaxLength="512" FixedLength="false" Unicode="true" />
+          <Property Name="UserID" Type="Int32" Nullable="false" />
+          <Property Name="LogTime" Type="DateTime" Precision="3" />
+        </EntityType>
+        <EntityType Name="cms_Membership">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ApplicationId" Type="Guid" Nullable="false" />
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="UserName" Type="String" Nullable="false" MaxLength="256" FixedLength="true" Unicode="true" />
+          <Property Name="Displayname" Type="String" Nullable="false" MaxLength="256" FixedLength="false" Unicode="true" />
+          <Property Name="Gender" Type="String" MaxLength="10" FixedLength="true" Unicode="true" />
+          <Property Name="Link" Type="String" MaxLength="100" FixedLength="true" Unicode="true" />
+          <Property Name="Provider" Type="String" MaxLength="20" FixedLength="true" Unicode="true" />
+          <Property Name="LoweredUserName" Type="String" Nullable="false" MaxLength="256" FixedLength="false" Unicode="true" />
+          <Property Name="MobileAlias" Type="String" MaxLength="16" FixedLength="false" Unicode="true" />
+          <Property Name="IsAnonymous" Type="Boolean" Nullable="false" />
+          <Property Name="Password" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="HashCode" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="Email" Type="String" MaxLength="256" FixedLength="false" Unicode="true" />
+          <Property Name="PasswordQuestion" Type="String" MaxLength="256" FixedLength="false" Unicode="true" />
+          <Property Name="PasswordAnswer" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="IsApproved" Type="Boolean" Nullable="false" />
+          <Property Name="IsLockedOut" Type="Boolean" Nullable="false" />
+          <Property Name="CreateDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="LastLoginDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="LastPasswordChangedDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="LastLockoutDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="FailedPasswordAttemptCount" Type="Int32" Nullable="false" />
+          <Property Name="ActivateCode" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="Comment" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="cms_GroupRoles" Relationship="CmsModel.cms_Membership_GroupRole" FromRole="cms_Membership" ToRole="cms_GroupRoles" />
+        </EntityType>
+        <EntityType Name="cms_Membership_Regency">
+          <Key>
+            <PropertyRef Name="MembershipID" />
+            <PropertyRef Name="RegencyID" />
+          </Key>
+          <Property Name="MembershipID" Type="Int32" Nullable="false" />
+          <Property Name="RegencyID" Type="Int32" Nullable="false" />
+        </EntityType>
+        <EntityType Name="cms_Regency">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="256" FixedLength="false" Unicode="true" />
+          <Property Name="LoweredName" Type="String" Nullable="false" MaxLength="256" FixedLength="false" Unicode="true" />
+          <Property Name="Description" Type="String" MaxLength="256" FixedLength="false" Unicode="true" />
+          <Property Name="ApplicationId" Type="Guid" Nullable="false" />
+        </EntityType>
+        <EntityType Name="cms_Regency_GroupRoles">
+          <Key>
+            <PropertyRef Name="RegencyID" />
+            <PropertyRef Name="GroupRolesID" />
+          </Key>
+          <Property Name="RegencyID" Type="Int32" Nullable="false" />
+          <Property Name="GroupRolesID" Type="Int32" Nullable="false" />
+        </EntityType>
+        <EntityType Name="cms_Roles">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ApplicationId" Type="Guid" Nullable="false" />
+          <Property Name="ID" Type="Int32" Nullable="false" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="256" FixedLength="false" Unicode="true" />
+          <Property Name="Code" Type="String" MaxLength="256" FixedLength="false" Unicode="true" />
+          <Property Name="LoweredRoleName" Type="String" Nullable="false" MaxLength="256" FixedLength="false" Unicode="true" />
+          <Property Name="Group" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Description" Type="String" MaxLength="256" FixedLength="false" Unicode="true" />
+          <Property Name="ParentID" Type="Int32" />
+          <Property Name="Order" Type="Int32" Nullable="false" />
+          <Property Name="Parent" Type="Int32" />
+          <NavigationProperty Name="cms_GroupRoles" Relationship="CmsModel.cms_GroupRoles_Roles" FromRole="cms_Roles" ToRole="cms_GroupRoles" />
+        </EntityType>
+        <EntityType Name="cms_Applications">
+          <Key>
+            <PropertyRef Name="ApplicationName" />
+            <PropertyRef Name="LoweredApplicationName" />
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ApplicationName" Type="String" Nullable="false" MaxLength="256" FixedLength="false" Unicode="true" />
+          <Property Name="LoweredApplicationName" Type="String" Nullable="false" MaxLength="256" FixedLength="false" Unicode="true" />
+          <Property Name="ID" Type="Guid" Nullable="false" />
+          <Property Name="Description" Type="String" MaxLength="256" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="vw_UserClientId">
+          <Key>
+            <PropertyRef Name="UserName" />
+            <PropertyRef Name="UserIDClient" />
+          </Key>
+          <Property Name="UserId" Type="Int32" />
+          <Property Name="UserName" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="UserIDClient" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Domain" Type="String" MaxLength="256" FixedLength="false" Unicode="true" />
+          <Property Name="Token" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <Association Name="cms_GroupRoles_Roles">
+          <End Type="CmsModel.cms_GroupRoles" Role="cms_GroupRoles" Multiplicity="*" />
+          <End Type="CmsModel.cms_Roles" Role="cms_Roles" Multiplicity="*" />
+        </Association>
+        <Association Name="cms_Membership_GroupRole">
+          <End Type="CmsModel.cms_GroupRoles" Role="cms_GroupRoles" Multiplicity="*" />
+          <End Type="CmsModel.cms_Membership" Role="cms_Membership" Multiplicity="*" />
+        </Association>
+        <EntityType Name="cms_UserClient">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="UserName" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="UserIDClient" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="ClientID" Type="Int32" Nullable="false" />
+          <Property Name="IsLogin" Type="Boolean" Nullable="false" />
+        </EntityType>
+        <ComplexType Name="cms_UserClient_GetUserClientByUserName_Result">
+          <Property Type="Int32" Name="ID" Nullable="false" />
+          <Property Type="String" Name="UserName" Nullable="false" MaxLength="50" />
+          <Property Type="String" Name="UserIDClient" Nullable="false" MaxLength="50" />
+          <Property Type="Int32" Name="ClientID" Nullable="false" />
+        </ComplexType>
+        </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="CmsModelStoreContainer" CdmEntityContainer="CMSEntities">
+          <EntitySetMapping Name="base_Categories_Position">
+            <EntityTypeMapping TypeName="CmsModel.base_Categories_Position">
+              <MappingFragment StoreEntitySet="base_Categories_Position">
+                <ScalarProperty Name="CategoryID" ColumnName="CategoryID" />
+                <ScalarProperty Name="PositionCategoryID" ColumnName="PositionCategoryID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="base_Category_TypeCategory">
+            <EntityTypeMapping TypeName="CmsModel.base_Category_TypeCategory">
+              <MappingFragment StoreEntitySet="base_Category_TypeCategory">
+                <ScalarProperty Name="CategoryID" ColumnName="CategoryID" />
+                <ScalarProperty Name="TypeCategoryID" ColumnName="TypeCategoryID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="base_DyinamicFieldsValue">
+            <EntityTypeMapping TypeName="CmsModel.base_DyinamicFieldsValue">
+              <MappingFragment StoreEntitySet="base_DyinamicFieldsValue">
+                <ScalarProperty Name="LastUpdatedUser" ColumnName="LastUpdatedUser" />
+                <ScalarProperty Name="CreatedUser" ColumnName="CreatedUser" />
+                <ScalarProperty Name="LastUpdatedDate" ColumnName="LastUpdatedDate" />
+                <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
+                <ScalarProperty Name="Active" ColumnName="Active" />
+                <ScalarProperty Name="Order" ColumnName="Order" />
+                <ScalarProperty Name="DynamicFieldID" ColumnName="DynamicFieldID" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="AbbreviationName" ColumnName="AbbreviationName" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="base_DynamicFieldGroups">
+            <EntityTypeMapping TypeName="CmsModel.base_DynamicFieldGroups">
+              <MappingFragment StoreEntitySet="base_DynamicFieldGroups">
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="base_DynamicFields">
+            <EntityTypeMapping TypeName="CmsModel.base_DynamicFields">
+              <MappingFragment StoreEntitySet="base_DynamicFields">
+                <ScalarProperty Name="DynamicFieldGroupsID" ColumnName="DynamicFieldGroupsID" />
+                <ScalarProperty Name="ApplicationId" ColumnName="ApplicationId" />
+                <ScalarProperty Name="LastUpdatedDate" ColumnName="LastUpdatedDate" />
+                <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="IsCheckBox" ColumnName="IsCheckBox" />
+                <ScalarProperty Name="Required" ColumnName="Required" />
+                <ScalarProperty Name="FuntionsID" ColumnName="FuntionsID" />
+                <ScalarProperty Name="Active" ColumnName="Active" />
+                <ScalarProperty Name="MultiValues" ColumnName="MultiValues" />
+                <ScalarProperty Name="Order" ColumnName="Order" />
+                <ScalarProperty Name="AbbreviationName" ColumnName="AbbreviationName" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="base_Language">
+            <EntityTypeMapping TypeName="CmsModel.base_Language">
+              <MappingFragment StoreEntitySet="base_Language">
+                <ScalarProperty Name="Status" ColumnName="Status" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="Code" ColumnName="Code" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="base_Log">
+            <EntityTypeMapping TypeName="CmsModel.base_Log">
+              <MappingFragment StoreEntitySet="base_Log">
+                <ScalarProperty Name="IPAddress" ColumnName="IPAddress" />
+                <ScalarProperty Name="LogTime" ColumnName="LogTime" />
+                <ScalarProperty Name="CreateUser" ColumnName="CreateUser" />
+                <ScalarProperty Name="LogType" ColumnName="LogType" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="base_PositionCategory">
+            <EntityTypeMapping TypeName="CmsModel.base_PositionCategory">
+              <MappingFragment StoreEntitySet="base_PositionCategory">
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="base_TypeCategory">
+            <EntityTypeMapping TypeName="CmsModel.base_TypeCategory">
+              <MappingFragment StoreEntitySet="base_TypeCategory">
+                <ScalarProperty Name="CssClass" ColumnName="CssClass" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="base_UserProfile">
+            <EntityTypeMapping TypeName="CmsModel.base_UserProfile">
+              <MappingFragment StoreEntitySet="base_UserProfile">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="cms_Client">
+            <EntityTypeMapping TypeName="CmsModel.cms_Client">
+              <MappingFragment StoreEntitySet="cms_Client">
+                <ScalarProperty Name="LastUpdatedDate" ColumnName="LastUpdatedDate" />
+                <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
+                <ScalarProperty Name="LastUpdatedUser" ColumnName="LastUpdatedUser" />
+                <ScalarProperty Name="CreatedUser" ColumnName="CreatedUser" />
+                <ScalarProperty Name="ParentID" ColumnName="ParentID" />
+                <ScalarProperty Name="Order" ColumnName="Order" />
+                <ScalarProperty Name="Active" ColumnName="Active" />
+                <ScalarProperty Name="Token" ColumnName="Token" />
+                <ScalarProperty Name="Domain" ColumnName="Domain" />
+                <ScalarProperty Name="Type" ColumnName="Type" />
+                <ScalarProperty Name="Title" ColumnName="Title" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="cms_Funtions">
+            <EntityTypeMapping TypeName="CmsModel.cms_Funtions">
+              <MappingFragment StoreEntitySet="cms_Funtions">
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="ApplicationId" ColumnName="ApplicationId" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="cms_GroupRoleCategory">
+            <EntityTypeMapping TypeName="CmsModel.cms_GroupRoleCategory">
+              <MappingFragment StoreEntitySet="cms_GroupRoleCategory">
+                <ScalarProperty Name="CategoryID" ColumnName="CategoryID" />
+                <ScalarProperty Name="GroupRoleID" ColumnName="GroupRoleID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="cms_GroupRoles">
+            <EntityTypeMapping TypeName="CmsModel.cms_GroupRoles">
+              <MappingFragment StoreEntitySet="cms_GroupRoles">
+                <ScalarProperty Name="LastUpdatedDate" ColumnName="LastUpdatedDate" />
+                <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
+                <ScalarProperty Name="LastUpdatedUser" ColumnName="LastUpdatedUser" />
+                <ScalarProperty Name="CreatedUser" ColumnName="CreatedUser" />
+                <ScalarProperty Name="AllChildrent" ColumnName="AllChildrent" />
+                <ScalarProperty Name="Order" ColumnName="Order" />
+                <ScalarProperty Name="IsDepartment" ColumnName="IsDepartment" />
+                <ScalarProperty Name="Active" ColumnName="Active" />
+                <ScalarProperty Name="ParentID" ColumnName="ParentID" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="cms_Logs">
+            <EntityTypeMapping TypeName="CmsModel.cms_Logs">
+              <MappingFragment StoreEntitySet="cms_Logs">
+                <ScalarProperty Name="LogTime" ColumnName="LogTime" />
+                <ScalarProperty Name="UserID" ColumnName="UserID" />
+                <ScalarProperty Name="LogPath" ColumnName="LogPath" />
+                <ScalarProperty Name="LogDescription" ColumnName="LogDescription" />
+                <ScalarProperty Name="LogType" ColumnName="LogType" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="cms_Membership">
+            <EntityTypeMapping TypeName="CmsModel.cms_Membership">
+              <MappingFragment StoreEntitySet="cms_Membership">
+                <ScalarProperty Name="Comment" ColumnName="Comment" />
+                <ScalarProperty Name="ActivateCode" ColumnName="ActivateCode" />
+                <ScalarProperty Name="FailedPasswordAttemptCount" ColumnName="FailedPasswordAttemptCount" />
+                <ScalarProperty Name="LastLockoutDate" ColumnName="LastLockoutDate" />
+                <ScalarProperty Name="LastPasswordChangedDate" ColumnName="LastPasswordChangedDate" />
+                <ScalarProperty Name="LastLoginDate" ColumnName="LastLoginDate" />
+                <ScalarProperty Name="CreateDate" ColumnName="CreateDate" />
+                <ScalarProperty Name="IsLockedOut" ColumnName="IsLockedOut" />
+                <ScalarProperty Name="IsApproved" ColumnName="IsApproved" />
+                <ScalarProperty Name="PasswordAnswer" ColumnName="PasswordAnswer" />
+                <ScalarProperty Name="PasswordQuestion" ColumnName="PasswordQuestion" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+                <ScalarProperty Name="HashCode" ColumnName="HashCode" />
+                <ScalarProperty Name="Password" ColumnName="Password" />
+                <ScalarProperty Name="IsAnonymous" ColumnName="IsAnonymous" />
+                <ScalarProperty Name="MobileAlias" ColumnName="MobileAlias" />
+                <ScalarProperty Name="LoweredUserName" ColumnName="LoweredUserName" />
+                <ScalarProperty Name="Provider" ColumnName="Provider" />
+                <ScalarProperty Name="Link" ColumnName="Link" />
+                <ScalarProperty Name="Gender" ColumnName="Gender" />
+                <ScalarProperty Name="Displayname" ColumnName="Displayname" />
+                <ScalarProperty Name="UserName" ColumnName="UserName" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="ApplicationId" ColumnName="ApplicationId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="cms_Membership_Regency">
+            <EntityTypeMapping TypeName="CmsModel.cms_Membership_Regency">
+              <MappingFragment StoreEntitySet="cms_Membership_Regency">
+                <ScalarProperty Name="RegencyID" ColumnName="RegencyID" />
+                <ScalarProperty Name="MembershipID" ColumnName="MembershipID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="cms_Regency">
+            <EntityTypeMapping TypeName="CmsModel.cms_Regency">
+              <MappingFragment StoreEntitySet="cms_Regency">
+                <ScalarProperty Name="ApplicationId" ColumnName="ApplicationId" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="LoweredName" ColumnName="LoweredName" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="cms_Regency_GroupRoles">
+            <EntityTypeMapping TypeName="CmsModel.cms_Regency_GroupRoles">
+              <MappingFragment StoreEntitySet="cms_Regency_GroupRoles">
+                <ScalarProperty Name="GroupRolesID" ColumnName="GroupRolesID" />
+                <ScalarProperty Name="RegencyID" ColumnName="RegencyID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="cms_Roles">
+            <EntityTypeMapping TypeName="CmsModel.cms_Roles">
+              <MappingFragment StoreEntitySet="cms_Roles">
+                <ScalarProperty Name="Parent" ColumnName="Parent" />
+                <ScalarProperty Name="Order" ColumnName="Order" />
+                <ScalarProperty Name="ParentID" ColumnName="ParentID" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="Group" ColumnName="Group" />
+                <ScalarProperty Name="LoweredRoleName" ColumnName="LoweredRoleName" />
+                <ScalarProperty Name="Code" ColumnName="Code" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="ApplicationId" ColumnName="ApplicationId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="cms_Applications">
+            <EntityTypeMapping TypeName="CmsModel.cms_Applications">
+              <MappingFragment StoreEntitySet="cms_Applications">
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="LoweredApplicationName" ColumnName="LoweredApplicationName" />
+                <ScalarProperty Name="ApplicationName" ColumnName="ApplicationName" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="vw_UserClientId">
+            <EntityTypeMapping TypeName="CmsModel.vw_UserClientId">
+              <MappingFragment StoreEntitySet="vw_UserClientId">
+                <ScalarProperty Name="Token" ColumnName="Token" />
+                <ScalarProperty Name="Domain" ColumnName="Domain" />
+                <ScalarProperty Name="UserIDClient" ColumnName="UserIDClient" />
+                <ScalarProperty Name="UserName" ColumnName="UserName" />
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <AssociationSetMapping Name="cms_GroupRoles_Roles" TypeName="CmsModel.cms_GroupRoles_Roles" StoreEntitySet="cms_GroupRoles_Roles">
+            <EndProperty Name="cms_Roles">
+              <ScalarProperty Name="ID" ColumnName="RolesID" />
+            </EndProperty>
+            <EndProperty Name="cms_GroupRoles">
+              <ScalarProperty Name="ID" ColumnName="GroupRolesID" />
+            </EndProperty>
+          </AssociationSetMapping>
+          <AssociationSetMapping Name="cms_Membership_GroupRole" TypeName="CmsModel.cms_Membership_GroupRole" StoreEntitySet="cms_Membership_GroupRole">
+            <EndProperty Name="cms_Membership">
+              <ScalarProperty Name="ID" ColumnName="MembershipID" />
+            </EndProperty>
+            <EndProperty Name="cms_GroupRoles">
+              <ScalarProperty Name="ID" ColumnName="GroupRoleId" />
+            </EndProperty>
+          </AssociationSetMapping>
+          <EntitySetMapping Name="cms_UserClient">
+            <EntityTypeMapping TypeName="CmsModel.cms_UserClient">
+              <MappingFragment StoreEntitySet="cms_UserClient">
+                <ScalarProperty Name="IsLogin" ColumnName="IsLogin" />
+                <ScalarProperty Name="ClientID" ColumnName="ClientID" />
+                <ScalarProperty Name="UserIDClient" ColumnName="UserIDClient" />
+                <ScalarProperty Name="UserName" ColumnName="UserName" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <FunctionImportMapping FunctionImportName="cms_UserClient_GetUserClientByUserName" FunctionName="CmsModel.Store.cms_UserClient_GetUserClientByUserName">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="CmsModel.cms_UserClient_GetUserClientByUserName_Result">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="UserName" ColumnName="UserName" />
+                <ScalarProperty Name="UserIDClient" ColumnName="UserIDClient" />
+                <ScalarProperty Name="ClientID" ColumnName="ClientID" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="cms_UserClient_UpdateByUserName" FunctionName="CmsModel.Store.cms_UserClient_UpdateByUserName" />
+          <FunctionImportMapping FunctionImportName="cms_UserSecretKey_GetByUserNameAndSecretKey" FunctionName="CmsModel.Store.cms_UserSecretKey_GetByUserNameAndSecretKey" />
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams>
+      <Diagram DiagramId="735704a618654e0286527714de18a97c" Name="Diagram1">
+        <EntityTypeShape EntityType="CmsModel.base_Categories_Position" Width="1.5" PointX="5.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="CmsModel.base_Category_TypeCategory" Width="1.5" PointX="5.75" PointY="3.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="CmsModel.base_DyinamicFieldsValue" Width="1.5" PointX="5.75" PointY="6.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="CmsModel.base_DynamicFieldGroups" Width="1.5" PointX="7.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="CmsModel.base_DynamicFields" Width="1.5" PointX="7.75" PointY="3.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="CmsModel.base_Language" Width="1.5" PointX="7.75" PointY="8.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="CmsModel.base_Log" Width="1.5" PointX="9.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="CmsModel.base_PositionCategory" Width="1.5" PointX="9.75" PointY="3.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="CmsModel.base_TypeCategory" Width="1.5" PointX="9.75" PointY="6.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="CmsModel.base_UserProfile" Width="1.5" PointX="9.75" PointY="9.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="CmsModel.cms_Client" Width="1.5" PointX="11.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="CmsModel.cms_Funtions" Width="1.5" PointX="11.75" PointY="5.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="CmsModel.cms_GroupRoleCategory" Width="1.5" PointX="5.75" PointY="11.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="CmsModel.cms_GroupRoles" Width="1.5" PointX="0.75" PointY="4.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="CmsModel.cms_Logs" Width="1.5" PointX="7.75" PointY="11.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="CmsModel.cms_Membership" Width="1.5" PointX="3" PointY="1.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="CmsModel.cms_Membership_Regency" Width="1.5" PointX="11.75" PointY="8.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="CmsModel.cms_Regency" Width="1.5" PointX="9.75" PointY="11.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="CmsModel.cms_Regency_GroupRoles" Width="1.5" PointX="11.75" PointY="11.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="CmsModel.cms_Roles" Width="1.5" PointX="3" PointY="7.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="CmsModel.cms_Applications" Width="1.5" PointX="0.75" PointY="12.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="CmsModel.vw_UserClientId" Width="1.5" PointX="2.75" PointY="12.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="CmsModel.cms_UserClient" Width="1.5" PointX="13.75" PointY="0.75" IsExpanded="true" />
+        <AssociationConnector Association="CmsModel.cms_GroupRoles_Roles" ManuallyRouted="false" />
+        <AssociationConnector Association="CmsModel.cms_Membership_GroupRole" ManuallyRouted="false" />
+      </Diagram>
+    </Diagrams>
+  </Designer>
+</edmx:Edmx>

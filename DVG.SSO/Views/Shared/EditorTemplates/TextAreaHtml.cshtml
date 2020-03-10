@@ -1,0 +1,9 @@
+﻿@{ Layout = "~/Views/Shared/EditorTemplates/_Layout.cshtml"; }
+<div class="control-group">
+    @Html.LabelFor(m => m, new { @class = "control-label" })
+    <div class="controls">
+        <div data-spy="scroll" data-target="#scrollspy-data" data-offset="0" class="scrollspy well body">
+            @Html.Raw(ViewData.TemplateInfo.FormattedModelValue)
+        </div>
+    </div>
+</div>

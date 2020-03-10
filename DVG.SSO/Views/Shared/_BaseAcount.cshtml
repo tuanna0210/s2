@@ -1,0 +1,35 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" />
+    <title>SSO System</title>
+    <link href="~/Resources/css/main" rel="stylesheet" type="text/css" />
+    <script src="~/Resources/js/jquery.min.js"></script>
+    <script src="~/Resources/js/jquery-ui.min.js"></script>
+    <script src="~/Resources/js/plugins/forms/jquery.uniform.min.js"></script>
+    <script src="~/Resources/js/files/bootstrap.min.js"></script>
+    <script src="~/Resources/js/files/login.js"></script>
+    <script src="~/Resources/js/jquery.md5.js"></script>
+    <script src="~/Scripts/jquery.validate.js"></script>
+    <script src="~/Scripts/jquery.validate.unobtrusive.js"></script>
+    <script src="~/Resources/js/customLogin.js"></script>
+</head>
+<body class="no-background">
+    <!-- Fixed top -->
+    <div id="top">
+        <div class="fixed">
+            <a href="index.html" title="" class="logo"><img src="~/Resources/img/logo.png" alt="" /></a>
+        </div>
+    </div>
+    <!-- /fixed top -->
+    <!-- Login block -->
+    @RenderBody()
+    <!-- /login block -->
+    <!-- Footer -->
+    <div id="footer">
+        <div class="copyrights">&copy;  SSO System.</div>
+    </div>
+    <!-- /footer -->
+</body>
+</html>

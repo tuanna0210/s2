@@ -1,0 +1,10 @@
+﻿@{ Layout = "~/Views/Shared/EditorTemplates/_Layout.cshtml"; }
+<div class="control-group">
+    <label class="control-label">@Html.LabelFor(m => m, new { @class = "control-label" })</label>
+    <div class="controls">
+        <label class="checkbox inline">
+           @Html.CheckBox("", (bool)ViewData.TemplateInfo.FormattedModelValue, new { @class = "validate[minCheckbox[2]] styled" })
+            @Html.ValidationMessageFor(m => m)
+        </label>
+    </div>
+</div>
