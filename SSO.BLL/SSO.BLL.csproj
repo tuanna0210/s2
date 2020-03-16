@@ -46,7 +46,7 @@
   <ItemGroup>
     <Compile Include="BaseBLL.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="SystemBLL.cs" />
+    <Compile Include="MyAccountBLL.cs" />
     <Compile Include="SystemUserBLL.cs" />
   </ItemGroup>
   <ItemGroup>

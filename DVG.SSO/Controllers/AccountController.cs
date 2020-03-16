@@ -1,10 +1,14 @@
 ﻿//using Authentication;
+using DVG.SSO.Models;
 using DVS.Algorithm;
 using MvcAuthenication;
+using Newtonsoft.Json;
 using SSO.Data;
 using SSO.Utils;
+using SSO.Utils.Commons;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Configuration;
 using System.Linq;
 using System.Text.RegularExpressions;
@@ -16,36 +20,38 @@ namespace DVG.SSO.Controllers
 {
     public class AccountController : BaseSystemController
     {
+        private UserClientIdDA objUserClientIdDA = new UserClientIdDA();
+        private MembershipDA userDA = new MembershipDA();
+        private Message objMsg = new Message() { Error = false, Title = "Login:" };
         public ActionResult Captcha(string prefix, bool effect = true)
         {
             Captcha security = new Captcha();
             return security.CreateCaptcha(prefix, effect);
         }
         public ActionResult Login(string returnUrl)
-
         {
             if (User != null)
                 return Redirect(ConfigurationManager.AppSettings["DefaultReturnUrl"]);
             ViewBag.ReturnUrl = returnUrl;
-            SystemUserLoginItem item = new SystemUserLoginItem() { Remember = true };
+            SystemUserLoginItemExtend item = new SystemUserLoginItemExtend() { Remember = true };
             return View(item);
         }
         public ActionResult LoginCallback(string returnUrl)
         {
-            SystemUserLoginItem item = new SystemUserLoginItem() { Remember = true, ReturnUrl = returnUrl, Provider = GetDomain(returnUrl) };
+            SystemUserLoginItemExtend item = new SystemUserLoginItemExtend() { Remember = true, ReturnUrl = returnUrl, Provider = GetDomain(returnUrl) };
             if (User != null)
             {
                 SystemUserLoginItem user = new SystemUserLoginItem();
                 user.UserName = User.Account;
                 user.Provider = GetDomain(returnUrl);
                 #region Xử lý nếu User đã đăng xuất tại client
-                var clientDa = new ClientDA();
-                var client = clientDa.GetByQuery(m => m.Domain == user.Provider);
+                var clientDA = new ClientDA();
+                var client = clientDA.GetByDomain(user.Provider); //lấy ra client mà user đang sử dụng
                 if (client != null)
                 {
                     var userClientDa = new UserClientDA();
-                    var userClient = userClientDa.GetListByUsernameAndClientId(User.Account, client.ID);//temp, cần test lại
-                    if (userClient != null)
+                    var userClient = userClientDa.GetListByUsernameAndClientId(User.Account, client.Id);
+                    if (userClient != null) //check nếu user có account của client đấy không
                     {
                         if (userClient.IsLogin == false)
                         {
@@ -73,7 +79,7 @@ namespace DVG.SSO.Controllers
             return View(item);
         }
         [HttpPost]
-        public JsonResult Login(SystemUserLoginItem user, string returnUrl)
+        public JsonResult Login(SystemUserLoginItemExtend user, string returnUrl)
         {
             try
             {
@@ -81,10 +87,22 @@ namespace DVG.SSO.Controllers
                 {
                     if (ModelState.IsValid)
                     {
-                        user.Password = user.Password.ToMD5(); 
+                        //user.Password = user.Password.ToMD5(); 
                         var error = SystemAuthenticate.Login(user);
                         if (error == SystemCommon.Error.LoginSuccess)
                         {
+                            //Check OTP
+                            var userInfo = userDA.GetListByUsername(user.UserName).FirstOrDefault();
+                            var secretkey = ConfigurationManager.AppSettings["OTPSecretKey"] + userInfo.OtpPrivateKey;
+                            if (!GoogleTOTP.IsVaLid(secretkey, user.OTP))
+                            {
+                                objMsg.Error = true;
+                                objMsg.Title = getMessageError(SystemCommon.Error.InfoIncorrect);
+                                //xóa cookie (check OTP phải xử lý sau khi login, vì login xử lý ở dll,nên nếu OTP ko chính xác thì phải xóa cookie
+                                FormsAuthentication.SignOut();
+                                return Json(objMsg);
+                            }
+
                             ////Cập nhật trường IsLogin trong bảng Userclient
                             var userClientDa = new UserClientDA();
                             var lstUserClient = userClientDa.GetListByUsername(user.UserName).ToList();
@@ -126,7 +144,7 @@ namespace DVG.SSO.Controllers
         }
            
         [HttpPost]
-        public JsonResult Logincallback(SystemUserLoginItem user)
+        public JsonResult Logincallback(SystemUserLoginItemExtend user)
         {
             //Nếu như user chưa đăng nhập bất cứ phần mềm nào = đã logout tất cả phần mềm và SSO đã bị logout thì bật tất cả các
             var flag = (User == null);//SSO bị logout
@@ -134,52 +152,71 @@ namespace DVG.SSO.Controllers
             {
                 if (ModelState.IsValid)
                 {
-                    user.Password = user.Password.ToMD5();
-                    var error = SystemAuthenticate.Login(user);
-                    if (error == SystemCommon.Error.LoginSuccess)
+                    if(user.SSOType == "Global")
                     {
-                        var userClientDA = new UserClientDA();//temp
-                        if (flag)
+                        //user.Password = user.Password.ToMD5();
+                        var error = SystemAuthenticate.Login(user);
+                        if (error == SystemCommon.Error.LoginSuccess)
                         {
-                            //var lstUserClient = userClientDa.GetAll(m => m.Username == user.UserName).ToList();
-                            var lstUserClient = userClientDA.GetListByUsername(user.UserName); //temp
-                            if (lstUserClient.Count(m => m.IsLogin) == 0)
+                            //Check OTP
+                            var userInfo = userDA.GetListByUsername(user.UserName).FirstOrDefault();
+                            var secretkey = ConfigurationManager.AppSettings["OTPSecretKey"] + userInfo.OtpPrivateKey;
+                            if (!GoogleTOTP.IsVaLid(secretkey, user.OTP))
                             {
-                                foreach (var item in lstUserClient)
+                                objMsg.Error = true;
+                                objMsg.Title = getMessageError(SystemCommon.Error.InfoIncorrect);
+                                //xóa cookie (check OTP phải xử lý sau khi login, vì login xử lý ở dll,nên nếu OTP ko chính xác thì phải xóa cookie
+                                FormsAuthentication.SignOut();
+                                return Json(objMsg);
+                            }
+
+                            var userClientDA = new UserClientDA();
+                            if (flag) //(*)
+                            {
+                                var lstUserClient = userClientDA.GetListByUsername(user.UserName);
+                                if (lstUserClient.Count(m => m.IsLogin) == 0)
                                 {
-                                    item.IsLogin = true;
-                                    //userClientDa.UpdateAndSubmit(item);//temp
-                                    userClientDA.Update(item);
+                                    foreach (var item in lstUserClient)
+                                    {
+                                        item.IsLogin = true;
+                                        userClientDA.Update(item);
+                                    }
                                 }
                             }
-                        }
-                        else
-                        {
-                            var clientDa = new ClientDA();
-                            var domain = GetDomain(user.ReturnUrl);
-                            var client = clientDa.GetByQuery(m => m.Domain == domain);
-                            var userClient = userClientDA.GetListByUsernameAndClientId(user.UserName, client.ID);
-                            if (userClient != null)
+                            else //(**)
                             {
-                                userClient.IsLogin = true;
-                                //userClientDa.UpdateAndSubmit(userClient);//temp
-                                userClientDA.Update(userClient);
+                                var clientDA = new ClientDA();
+                                var domain = GetDomain(user.ReturnUrl);
+                                var client = clientDA.GetByDomain(domain);
+                                var userClient = userClientDA.GetListByUsernameAndClientId(user.UserName, client.Id);
+                                if (userClient != null)
+                                {
+                                    userClient.IsLogin = true;
+                                    userClientDA.Update(userClient);
+                                }
                             }
-                        }
 
-                        if (string.IsNullOrEmpty(user.ReturnUrl))
-                            objMsg.Title = ConfigurationManager.AppSettings["DefaultReturnUrl"];
+                            if (string.IsNullOrEmpty(user.ReturnUrl))
+                                objMsg.Title = ConfigurationManager.AppSettings["DefaultReturnUrl"];
+                            else
+                            {
+                                objMsg.Title = string.Format("{0}{1}{2}", user.ReturnUrl, "?data=", HttpUtility.UrlEncode(GetReturnData(user)));
+                            }
+
+                        }
                         else
-                        {
-                            objMsg.Title = string.Format("{0}{1}{2}", user.ReturnUrl, "?data=", HttpUtility.UrlEncode(GetReturnData(user)));
+                        {                          
+                            objMsg.Title = getMessageError(error);
+                            objMsg.Error = true;
                         }
-
                     }
                     else
                     {
-                        objMsg.Title = getMessageError(error);
-                        objMsg.Error = true;
-                    }
+                        var url = ConfigurationManager.AppSettings["SSOVN"];
+                        user.SecretKey = Security.CreateKey();
+                        var ssoVNResponse = JsonConvert.DeserializeObject<Message>(HttpUtils.MakePostRequest(url, JsonConvert.SerializeObject(user), "application/json"));
+                        objMsg = ssoVNResponse;
+                    }               
                 }
                 else
                 {
@@ -240,8 +277,97 @@ namespace DVG.SSO.Controllers
             }
             return message;
         }
-        private UserClientIdDA objUserClientIdDA = new UserClientIdDA();
-        private Message objMsg = new Message() { Error = false, Title = "Login:" };
-    }
+        public ActionResult Logout()
+        {
+            SystemAuthenticate.Logout();
+            var userClientDa = new UserClientDA();
+            var userClient = userClientDa.GetListByUsername(User.Account).ToList();
+            foreach (var item in userClient)
+            {
+                item.IsLogin = false;
+                userClientDa.Update(item);
+            }
+            return Redirect(SystemAuthenticate.LoginUrl);
+        }
+        public ActionResult LogoutCallback(string returnUrl)
+        {
+            //Cập nhật trường IsLogin trong bảng Userclient
+            var clientDa = new ClientDA();
+            var domain = GetDomain(returnUrl);
+            var client = clientDa.GetByDomain(domain);
+            if (client != null)
+            {
+                if (User != null)
+                {
+                    var userClientDa = new UserClientDA();
+                    var userClient = userClientDa.GetListByUsernameAndClientId(User.Account, client.Id);
+                    if (userClient != null)
+                    {
+                        userClient.IsLogin = false;
+                        userClientDa.Update(userClient);
+                    }
+                }
+            }
 
+            if (string.IsNullOrEmpty(returnUrl))
+            {
+                Uri myReferrer = Request.UrlReferrer;
+                string actual = myReferrer.ToString();
+                return Redirect(actual);
+            }
+            else
+            {
+                return Redirect("/account/logincallback?returnUrl=" + returnUrl);
+            }
+
+        }
+        [HttpPost]
+        public ActionResult AllocateOTP1(int userId)
+        {
+            return Json("AAAAAAAAAAAAAA");
+        }
+        public ActionResult AllocateOTP(int userId)
+        {
+            // Cập nhật lại OTP private key cho nhân viên này
+            var user = userDA.GetById(userId);
+            // Sinh mã OTP private key trong bảng user
+            var randomString = StringUtils.RandomString(5);
+            userDA.UpdateOTPPrivateKey(userId, randomString);
+
+            var secretKey = ConfigurationManager.AppSettings["OTPSecretKey"] + randomString;
+            var dataInfo = new
+            {
+                UserName = user.Username,
+                SecretKey = secretKey,
+                ExpiredTime = System.DateTime.Now.AddMinutes(5)
+            };
+            //var data = HttpUtility.UrlEncode(JsonConvert.SerializeObject(dataInfo).Encrypt());
+            var data = JsonConvert.SerializeObject(dataInfo).Encrypt();
+            //var link = string.Format("/User/ShowQRCode?data={0}", data);
+            //var fullLink = AppSettings.Instance.GetString("ServerDomain").ToString() + link;
+            //data = "%2bZr86lkPS9rsBTjBmkW9kRVQm%2f4N%2b7JapCI9l0HNN2EVjKb0VM351xz20ImAlJrRv0TVXwL2FW9mXuVtLijOXo8%2b87jARoNRMAIr5LFQYKfX95STJdD%2f2q8qttKlWIrYJ%2b4Kf7%2bupHZtEAwV%2b%2bWp%2bv9aNV%2b8QH14VHB1A27WVDo%3d";
+            var test = data.Decrypt();
+            var dataDecrypt = JsonConvert.DeserializeObject<dynamic>(data.Decrypt());
+            var username = (string)dataDecrypt.UserName;
+            var secretKey1 = (string)dataDecrypt.SecretKey;
+            var expiredTime = (System.DateTime)dataDecrypt.ExpiredTime;
+            //Sinh ra ảnh QR code
+            var googleOPTAuthenticator = new GoogleTOTP();
+            var qRCodeImage = googleOPTAuthenticator.GenerateImage(secretKey, "AUTOPORTAL.CRM.NIGE-" + "temp");
+
+            string data1 = "";
+            //var retVal = new OTPManagerModel();
+            if (expiredTime > System.DateTime.Now)
+            {
+                data1 = qRCodeImage;
+            }
+            else
+            {
+                data1 = "The QRCode is expired.Please contact IT to be supported.";
+            }
+
+            return View("AllocateOTP", null,data1);
+        }
+        
+    }  
 }

@@ -20,7 +20,7 @@ namespace SSO.Utils
         public const string RestoreError = "Phục hồi dữ liệu không thành công! ";
         public const string LoginSuccess = "Đăng nhập hệ thống thành công! ";
         public const string LoginFail = "Đăng nhập hệ thống không thành công! ";
-        public const string LoginInfoIncorrect = "Thông tin tài khoản hoặc mật khẩu không phù hợp! ";
+        public const string LoginInfoIncorrect = "Thông tin tài khoản/mật khẩu/OTP không phù hợp! ";
         public const string IncorrectPassword = "Mật khẩu không đúng! ";
         public const string LoginNotActivated = "Tài khoản chưa được kích hoạt!";
         public const string LoginCodeIncorrect = "Thông tin mã khách hàng không đúng hoặc chưa được kích hoạt! ";

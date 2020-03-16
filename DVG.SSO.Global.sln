@@ -15,8 +15,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SSO.Data", "SSO.Data\SSO.Da
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SSO.BLL", "SSO.BLL\SSO.BLL.csproj", "{02E5A206-3B4E-40BE-AFAB-083E331327EA}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Test", "Test\Test.csproj", "{02C3CDE8-134C-4DCE-ACBD-0028B56E7793}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -47,10 +45,6 @@ Global
 		{02E5A206-3B4E-40BE-AFAB-083E331327EA}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{02E5A206-3B4E-40BE-AFAB-083E331327EA}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{02E5A206-3B4E-40BE-AFAB-083E331327EA}.Release|Any CPU.Build.0 = Release|Any CPU
-		{02C3CDE8-134C-4DCE-ACBD-0028B56E7793}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{02C3CDE8-134C-4DCE-ACBD-0028B56E7793}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{02C3CDE8-134C-4DCE-ACBD-0028B56E7793}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{02C3CDE8-134C-4DCE-ACBD-0028B56E7793}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

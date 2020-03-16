@@ -3,7 +3,7 @@
     Layout = "~/Views/Shared/_BaseAcount.cshtml";
 }
 @using DVG.SSO.Ultility;
-@model MvcAuthenication.SystemUserLoginItem
+@model DVG.SSO.Models.SystemUserLoginItemExtend
 <div class="login">
     <div class="navbar">
         <div class="navbar-inner">
@@ -15,6 +15,7 @@
         {
             @Html.EditorFor(model => model.UserName)
             @Html.EditorFor(model => model.Password)
+            @Html.EditorFor(model => model.OTP)
             @Html.HiddenFor(model => model.ReturnUrl)
             @Html.HiddenFor(model => model.Provider)
             <div class="control-group">
@@ -27,7 +28,33 @@
                     @Html.DropDownListFor(model => model.Languague, new SelectList(TypeData.lstCulture, "ID", "Name"), new { @class = "span12" })
                 </div>
             </div>
-            @Html.EditorFor(model => model.Remember)
+            <div class="control-group">
+                <div style="margin-top: 10px;">
+                    <label class="radio inline">
+                        <div class="choice checked" id="uniform-d">
+                            <span>
+                                <input type="radio" name="SSOType" class="styled" value="Global" checked="" style="opacity: 0;">
+                            </span>
+                        </div>
+                        SSO Global
+                    </label>
+                    <label class="radio inline">
+                        <div class="choice" id="uniform-f">
+                            <span>
+                                <input type="radio" name="SSOType" class="styled" value="VN" style="opacity: 0;">
+                            </span>
+                        </div>
+                        SSO VN
+                    </label>
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="checkbox inline">
+                    <div class="checker" id="uniform-inlineCheckbox1"><span class="checked"><input type="checkbox" name="Remember" class="styled" value="true" checked="checked" style="opacity: 0;"></span></div>
+                    Nhớ tài khoản
+                </label>
+            </div>
+            @*@Html.EditorFor(model => model.Remember)*@
             <div class="login-btn"><button type="submit" id="btnLogin" class="btn btn-danger btn-block">Log me in</button></div>
             <span id="lblMessage"></span>
         }

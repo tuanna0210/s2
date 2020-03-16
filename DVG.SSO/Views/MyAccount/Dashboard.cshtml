@@ -1,0 +1,34 @@
+﻿using System.Web.Mvc.Html;
+@{
+    ViewBag.Title = "Dashboard";
+    Layout = "~/Views/Shared/_Base.cshtml";
+}
+
+<div class="crumbs">
+    <ul id="breadcrumbs" class="breadcrumb">
+        <li><a href="/myaccount/dashboard">Dashboard</a></li>
+    </ul>
+</div>
+@Html.ActionLink("Account", "AllocateOTP", new { controller = "Account" }, new { userId = 123, target = "_blank" })
+<a href="/Account/AllocateOTP?userId=123">Test</a>
+<a href="#" class="creatOTP">Test 123</a>
+<!-- /breadcrumbs line -->
+<div class="actions-wrapper">
+    <div class="actions" data-easytabs="true" style="">
+
+        <div id="user-stats" class="active" style="display: block;">
+            <ul class="round-buttons">
+                <li><div class="depth"><a href="/MyAccount/ChangePassword" title="Đổi mật khẩu" class="tip" data-original-title="Đổi mật khẩu"><i class="icon-key"></i></a></div></li>
+                <li><div class="depth"><a href="/Account/Logout" title="Đăng xuất" class="tip" data-original-title="Đăng xuất"><i class="icon-signout"></i></a></div></li>
+            </ul>
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+    $(".creatOTP").each(() => {
+        $(this).off('click');
+        $(this).on('click', function () {
+            alert('dđ');
+        });
+    });
+</script>

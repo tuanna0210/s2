@@ -1,0 +1,12 @@
+﻿
+@{
+    ViewBag.Title = "AllocateOTP";
+    Layout = "~/Views/Shared/_Base.cshtml";
+}
+@model string
+<h6>
+    OTP QR Code
+</h6>
+<div id="OTPImage">
+    @Html.Raw(Model)
+</div>

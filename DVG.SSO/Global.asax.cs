@@ -1,5 +1,4 @@
-﻿//using Authentication; //temp
-using MvcAuthenication;
+﻿using MvcAuthenication;
 using DVG.SSO.App_Start;
 using System;
 using System.Collections.Generic;

@@ -2513,10 +2513,8 @@ input:focus:invalid:focus, textarea:focus:invalid:focus, select:focus:invalid:fo
 
 /* # Media queries
 ================================================== */
-
 @media (min-width: 1025px) and (max-width: 1280px) {
-
-  .row-fluid { width: 100%; *zoom: 1; }
+    .row-fluid { width: 100%; *zoom: 1; }
   .row-fluid:before, .row-fluid:after { display: table; line-height: 0; content: ""; }
   .row-fluid:after { clear: both; }
   .row-fluid [class*="span"] { display: block; float: left; width: 100%; min-height: 30px; margin-left: 2.7624309392265194%; *margin-left: 2.709239449864817%;
@@ -2616,7 +2614,10 @@ input:focus:invalid:focus, textarea:focus:invalid:focus, select:focus:invalid:fo
   .login { width: 284px; position: static; margin: 0 auto; padding: 30px 0 72px 0; }
 
 }
+@media (min-width: 992px) {
 
+    .change-pw-widget{width: 50%; margin: auto;}
+}
 
 @media (max-width: 768px) {
 

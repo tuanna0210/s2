@@ -1,5 +1,4 @@
-﻿//using Authentication; //temp
-using MvcAuthenication;
+﻿using MvcAuthenication;
 using SSO.BLL;
 using System;
 using System.Collections.Generic;
@@ -40,13 +39,7 @@ namespace DVG.SSO.App_Start
         {
             get
             {
-                Database database = new Database()
-                {
-                    DataSoure = "KhuongDuy-HP",
-                    Name = "TestCMS",
-                    UserId = "sa",
-                    Password = "123456789a@@",
-                };
+                Database database = new Database();
                 return database;
             }
         }

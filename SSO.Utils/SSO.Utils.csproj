@@ -32,7 +32,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
-    <Reference Include="System.Configuration" />
+    <Reference Include="System.configuration" />
     <Reference Include="System.Core" />
     <Reference Include="System.Web" />
     <Reference Include="System.Xml.Linq" />
@@ -44,7 +44,10 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Commons\CryptorEngine.cs" />
+    <Compile Include="Commons\GoogleTOTP.cs" />
+    <Compile Include="Commons\HttpUtils.cs" />
     <Compile Include="Commons\LogMan.cs" />
+    <Compile Include="Commons\StringUtils.cs" />
     <Compile Include="Commons\Utility.cs" />
     <Compile Include="Message.cs" />
     <Compile Include="Notify.cs" />

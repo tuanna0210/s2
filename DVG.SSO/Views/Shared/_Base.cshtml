@@ -27,7 +27,6 @@
     <script type="text/javascript" src="~/Resources/js/plugins/tables/jquery.dataTables.min.js"></script>
     <script type="text/javascript" src="~/Resources/js/files/bootstrap.min.js"></script>
     <script type="text/javascript" src="~/Resources/js/files/functions.js"></script>
-    <script src="~/ckeditor/ckeditor.js"></script>
     <script src="~/Resources/js/jquery.treeview.js"></script>
 </head>
 <body>
@@ -40,7 +39,8 @@
                 <li class="dropdown">
                     <a class="user-menu" data-toggle="dropdown"><img src="@_User.Avatar" alt="" /><span>@User.Identity.Name<b class="caret"></b></span></a>
                     <ul class="dropdown-menu">
-                        <li><a href="/Account/Logout" title=""><i class="icon-remove"></i>Đăng xuất</a></li>
+                        <li><a href="/MyAccount/ChangePassword" title=""><i class="icon-key"></i>Đổi mật khẩu</a></li>
+                        <li><a href="/Account/Logout" title=""><i class="icon-signout"></i>Đăng xuất</a></li>
                     </ul>
                 </li>
             </ul>

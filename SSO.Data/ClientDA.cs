@@ -7,8 +7,16 @@ using System.Threading.Tasks;
 
 namespace SSO.Data
 {
-    public class ClientDA : BaseSystemDA<cms_Client, int>, IBaseSystemDA<cms_Client>
+    public class ClientDA
     {
-        public ClientDA(bool syn = false) : base(syn) { }
+        public Client GetByDomain(string domain)
+        {
+            using (var context = MainDbContext.SSODB())
+            {
+                return context.StoredProcedure("client_getbydomain")
+                    .Parameter("_domain", domain)
+                    .QuerySingle<Client>();
+            }
+        }
     }
 }

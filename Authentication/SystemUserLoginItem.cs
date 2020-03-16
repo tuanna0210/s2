@@ -37,7 +37,7 @@ namespace Authentication
         }
 
         [Required(ErrorMessage = "Yêu cầu nhập!")]
-        //[CaptchaValid(ErrorMessage = "Giá trị nhập không đúng!")] //temp
+        [CaptchaValid(ErrorMessage = "Giá trị nhập không đúng!")] //temp
         [DisplayFormat(ConvertEmptyStringToNull = true)]
         [Display(Name = "Captcha")]
         public string Captcha { get; set; }

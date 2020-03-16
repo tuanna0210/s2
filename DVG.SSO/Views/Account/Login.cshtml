@@ -5,7 +5,7 @@
                 ViewBag.Title = "login";
                 Layout = "~/Views/Shared/_BaseAcount.cshtml";
 }
-@model MvcAuthenication.SystemUserLoginItem
+@model DVG.SSO.Models.SystemUserLoginItemExtend
 <div class="login">
     <div class="navbar">
         <div class="navbar-inner">
@@ -17,7 +17,7 @@
         {
             @Html.EditorFor(model => model.UserName)
             @Html.EditorFor(model => model.Password)
-
+            @Html.EditorFor(model => model.OTP)
             <div class="control-group">
                 <div id="divCaptCha"><img src="~/Account/Captcha/?prefix=Captcha" id="imgCaptcha" /></div>
                 <div class="controls"><input class="span12" type="text" name="Captcha" placeholder="Nhập kết quả" id="Captcha" /></div>
