@@ -13,6 +13,8 @@ namespace DVG.SSO.Models
         [Required(ErrorMessage = "Yêu cầu nhập!")]
         public string DisplayName { get; set; }
         [Required(ErrorMessage = "Yêu cầu nhập!")]
+        [EmailAddress(ErrorMessage = "Địa chỉ email không hợp lệ!")]
+        [DataType(DataType.EmailAddress)]
         public string Email { get; set; }
         public bool IsAnonymous { get; set; }
         public bool IsApproved { get; set; }

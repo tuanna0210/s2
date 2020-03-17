@@ -148,14 +148,16 @@ namespace SSO.BLL
         public Message Create(Membership model)
         {
             Message result = new Message();
-            var userInfo = userDA.GetListByUsername(model.Username); //temp
+            var userInfo = userDA.GetListByUsernameOrEmail(model.Username, model.Email);
             if(userInfo != null && userInfo.Count > 0)
             {
                 result.Error = true;
-                result.Title = "User đã tồn tại";
+                result.Title = "Username/email đã tồn tại";
             }
             else
             {
+                model.Username = model.Username.ToLower();
+                model.Email = model.Email.ToLower();
                 model.Password = Common.GetMd5x2("123456");
                 model.LoweredUserName = string.Empty;
                 model.CreatedDate = DateTime.Now;

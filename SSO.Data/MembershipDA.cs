@@ -29,6 +29,16 @@ namespace SSO.Data
                     .QueryMany<Membership>();
             }
         }
+        public List<Membership> GetListByUsernameOrEmail(string username, string email)
+        {
+            using (var context = MainDbContext.SSODB())
+            {
+                return context.StoredProcedure("membership_getlistbyusernameoremail")
+                    .Parameter("_username", username)
+                    .Parameter("_email", email)
+                    .QueryMany<Membership>();
+            }
+        }
         public Membership GetById(int userID)
         {
             using (var context = MainDbContext.SSODB())

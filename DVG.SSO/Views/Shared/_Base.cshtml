@@ -36,7 +36,7 @@
     <div id="top">
         <div class="fixed">
             <a href="index.html" title="" class="logo"><img src="~/Resources/img/logo.png" alt="" /></a>
-            @if (_User.IsInRole(1))
+            @if (_User != null && _User.IsInRole(1))
             {
                 <ul class="top-menu" style="float: left; margin-left: 50px; border: none">
                     <li class="dropdown" style="border: none">

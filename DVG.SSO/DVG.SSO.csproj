@@ -469,6 +469,7 @@
     <Content Include="Views\MyAccount\ChangePassword.cshtml" />
     <Content Include="Views\Account\AllocateOTP.cshtml" />
     <Content Include="Views\Shared\_QRLayout.cshtml" />
+    <Content Include="Views\Shared\EditorTemplates\EmailAddress.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

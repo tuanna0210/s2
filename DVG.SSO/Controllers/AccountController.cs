@@ -87,7 +87,7 @@ namespace DVG.SSO.Controllers
                 {
                     if (ModelState.IsValid)
                     {
-                        //user.Password = user.Password.ToMD5(); 
+                        user.UserName = user.UserName.ToLower();
                         var error = SystemAuthenticate.Login(user);
                         if (error == SystemCommon.Error.LoginSuccess)
                         {
@@ -146,83 +146,91 @@ namespace DVG.SSO.Controllers
         [HttpPost]
         public JsonResult Logincallback(SystemUserLoginItemExtend user)
         {
-            //Nếu như user chưa đăng nhập bất cứ phần mềm nào = đã logout tất cả phần mềm và SSO đã bị logout thì bật tất cả các
-            var flag = (User == null);//SSO bị logout
-            if (FormsAuthentication.CookiesSupported)
-            {
-                if (ModelState.IsValid)
+            try {
+                //Nếu như user chưa đăng nhập bất cứ phần mềm nào = đã logout tất cả phần mềm và SSO đã bị logout thì bật tất cả các
+                var flag = (User == null);//SSO bị logout
+                if (FormsAuthentication.CookiesSupported)
                 {
-                    if (user.SSOType == "Global")
+                    if (ModelState.IsValid)
                     {
-                        //user.Password = user.Password.ToMD5();
-                        var error = SystemAuthenticate.Login(user);
-                        if (error == SystemCommon.Error.LoginSuccess)
+                        if (user.SSOType == "Global")
                         {
-                            //Check OTP
-                            var userInfo = userDA.GetListByUsername(user.UserName).FirstOrDefault();
-                            var secretkey = ConfigurationManager.AppSettings["OTPSecretKey"] + userInfo.OtpPrivateKey;
-                            if (!GoogleTOTP.IsVaLid(secretkey, user.OTP))
+                            user.UserName = user.UserName.ToLower();
+                            var error = SystemAuthenticate.Login(user);
+                            if (error == SystemCommon.Error.LoginSuccess)
                             {
-                                objMsg.Error = true;
-                                objMsg.Title = getMessageError(SystemCommon.Error.InfoIncorrect);
-                                //xóa cookie (check OTP phải xử lý sau khi login, vì login xử lý ở dll,nên nếu OTP ko chính xác thì phải xóa cookie
-                                FormsAuthentication.SignOut();
-                                return Json(objMsg);
-                            }
-
-                            var userClientDA = new UserClientDA();
-                            if (flag) //(*)
-                            {
-                                var lstUserClient = userClientDA.GetListByUsername(user.UserName);
-                                if (lstUserClient.Count(m => m.IsLogin) == 0)
+                                //Check OTP
+                                var userInfo = userDA.GetListByUsername(user.UserName).FirstOrDefault();
+                                var secretkey = ConfigurationManager.AppSettings["OTPSecretKey"] + userInfo.OtpPrivateKey;
+                                if (!GoogleTOTP.IsVaLid(secretkey, user.OTP))
                                 {
-                                    foreach (var item in lstUserClient)
+                                    objMsg.Error = true;
+                                    objMsg.Title = getMessageError(SystemCommon.Error.InfoIncorrect);
+                                    //xóa cookie (check OTP phải xử lý sau khi login, vì login xử lý ở dll,nên nếu OTP ko chính xác thì phải xóa cookie
+                                    FormsAuthentication.SignOut();
+                                    return Json(objMsg);
+                                }
+
+                                var userClientDA = new UserClientDA();
+                                if (flag) //(*)
+                                {
+                                    var lstUserClient = userClientDA.GetListByUsername(user.UserName);
+                                    if (lstUserClient.Count(m => m.IsLogin) == 0)
                                     {
-                                        item.IsLogin = true;
-                                        userClientDA.Update(item);
+                                        foreach (var item in lstUserClient)
+                                        {
+                                            item.IsLogin = true;
+                                            userClientDA.Update(item);
+                                        }
                                     }
                                 }
-                            }
-                            else //(**)
-                            {
-                                var clientDA = new ClientDA();
-                                var domain = GetDomain(user.ReturnUrl);
-                                var client = clientDA.GetByDomain(domain);
-                                var userClient = userClientDA.GetListByUsernameAndClientId(user.UserName, client.Id);
-                                if (userClient != null)
+                                else //(**)
                                 {
-                                    userClient.IsLogin = true;
-                                    userClientDA.Update(userClient);
+                                    var clientDA = new ClientDA();
+                                    var domain = GetDomain(user.ReturnUrl);
+                                    var client = clientDA.GetByDomain(domain);
+                                    var userClient = userClientDA.GetListByUsernameAndClientId(user.UserName, client.Id);
+                                    if (userClient != null)
+                                    {
+                                        userClient.IsLogin = true;
+                                        userClientDA.Update(userClient);
+                                    }
                                 }
-                            }
 
-                            if (string.IsNullOrEmpty(user.ReturnUrl))
-                                objMsg.Title = ConfigurationManager.AppSettings["DefaultReturnUrl"];
+                                if (string.IsNullOrEmpty(user.ReturnUrl))
+                                    objMsg.Title = ConfigurationManager.AppSettings["DefaultReturnUrl"];
+                                else
+                                {
+                                    objMsg.Title = string.Format("{0}{1}{2}", user.ReturnUrl, "?data=", HttpUtility.UrlEncode(GetReturnData(user)));
+                                }
+
+                            }
                             else
                             {
-                                objMsg.Title = string.Format("{0}{1}{2}", user.ReturnUrl, "?data=", HttpUtility.UrlEncode(GetReturnData(user)));
+                                objMsg.Title = getMessageError(error);
+                                objMsg.Error = true;
                             }
-
                         }
                         else
                         {
-                            objMsg.Title = getMessageError(error);
-                            objMsg.Error = true;
+                            var url = ConfigurationManager.AppSettings["SSOVN"];
+                            user.SecretKey = Security.CreateKey();
+                            var ssoVNResponse = JsonConvert.DeserializeObject<Message>(HttpUtils.MakePostRequest(url, JsonConvert.SerializeObject(user), "application/json"));
+                            objMsg = ssoVNResponse;
                         }
                     }
                     else
                     {
-                        var url = ConfigurationManager.AppSettings["SSOVN"];
-                        user.SecretKey = Security.CreateKey();
-                        var ssoVNResponse = JsonConvert.DeserializeObject<Message>(HttpUtils.MakePostRequest(url, JsonConvert.SerializeObject(user), "application/json"));
-                        objMsg = ssoVNResponse;
+                        objMsg.Error = true;
+                        objMsg.Title = string.Join("</br>", ModelState.Keys.SelectMany(k => ModelState[k].Errors).Select(m => m.ErrorMessage));
                     }
                 }
-                else
-                {
-                    objMsg.Error = true;
-                    objMsg.Title = string.Join("</br>", ModelState.Keys.SelectMany(k => ModelState[k].Errors).Select(m => m.ErrorMessage));
-                }
+            }
+            catch (Exception ex)
+            {
+
+                objMsg.Error = true;
+                objMsg.Title = ex.Message;
             }
             return Json(objMsg);
         }
