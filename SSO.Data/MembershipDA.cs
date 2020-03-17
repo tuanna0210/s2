@@ -66,5 +66,13 @@ namespace SSO.Data
                     .Execute();
             }
         }
+        public List<Membership> Search()
+        {
+            using (var context = MainDbContext.SSODB())
+            {
+                return context.StoredProcedure("membership_search")
+                    .QueryMany<Membership>();
+            }
+        }
     }
 }

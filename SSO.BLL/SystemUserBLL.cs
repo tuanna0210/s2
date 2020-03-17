@@ -13,6 +13,7 @@ namespace SSO.BLL
     public class SystemUserBLL : IUserService
     {
         private MembershipDA userDA = new MembershipDA();
+        private Membership_GroupRoleDA membership_GroupRoleDA = new Membership_GroupRoleDA();
         public string GetUserNameByID(int userid)
         {
             return userDA.GetById(userid).DisplayName;
@@ -108,7 +109,8 @@ namespace SSO.BLL
 
             if (user != null && !user.IsLockedOut) 
             {
-                //List<int> lstRole = new List<int>();
+                List<int> lstRole = new List<int>();
+                var listGroupByUser = membership_GroupRoleDA.GetListByUserId(user.Id);
                 //foreach (var item in user.cms_GroupRoles)
                 //{
                 //    if (item.cms_Roles.Count > 0)
@@ -141,6 +143,10 @@ namespace SSO.BLL
         public List<int> GetParentGroupIds(List<int> groupIds)
         {
             throw new NotImplementedException();
+        }
+        public List<Membership> GetUsers()
+        {
+            return userDA.Search();
         }
     }
 }

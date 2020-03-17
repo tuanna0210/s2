@@ -158,17 +158,17 @@ namespace DVG.SSO.Controllers
                         var error = SystemAuthenticate.Login(user);
                         if (error == SystemCommon.Error.LoginSuccess)
                         {
-                            //Check OTP
-                            var userInfo = userDA.GetListByUsername(user.UserName).FirstOrDefault();
-                            var secretkey = ConfigurationManager.AppSettings["OTPSecretKey"] + userInfo.OtpPrivateKey;
-                            if (!GoogleTOTP.IsVaLid(secretkey, user.OTP))
-                            {
-                                objMsg.Error = true;
-                                objMsg.Title = getMessageError(SystemCommon.Error.InfoIncorrect);
-                                //xóa cookie (check OTP phải xử lý sau khi login, vì login xử lý ở dll,nên nếu OTP ko chính xác thì phải xóa cookie
-                                FormsAuthentication.SignOut();
-                                return Json(objMsg);
-                            }
+                            ////Check OTP
+                            //var userInfo = userDA.GetListByUsername(user.UserName).FirstOrDefault();
+                            //var secretkey = ConfigurationManager.AppSettings["OTPSecretKey"] + userInfo.OtpPrivateKey;
+                            //if (!GoogleTOTP.IsVaLid(secretkey, user.OTP))
+                            //{
+                            //    objMsg.Error = true;
+                            //    objMsg.Title = getMessageError(SystemCommon.Error.InfoIncorrect);
+                            //    //xóa cookie (check OTP phải xử lý sau khi login, vì login xử lý ở dll,nên nếu OTP ko chính xác thì phải xóa cookie
+                            //    FormsAuthentication.SignOut();
+                            //    return Json(objMsg);
+                            //}
 
                             var userClientDA = new UserClientDA();
                             if (flag) //(*)
@@ -324,7 +324,57 @@ namespace DVG.SSO.Controllers
         [HttpPost]
         public ActionResult AllocateOTP1(int userId)
         {
-            return Json("AAAAAAAAAAAAAA");
+            try
+            {
+                var user = userDA.GetById(userId);
+                // Sinh mã OTP private key trong bảng user
+                var randomString = StringUtils.RandomString(5);
+                userDA.UpdateOTPPrivateKey(userId, randomString);
+
+                var secretKey = ConfigurationManager.AppSettings["OTPSecretKey"] + randomString;
+                var dataInfo = new
+                {
+                    UserName = user.Username,
+                    SecretKey = secretKey,
+                    ExpiredTime = System.DateTime.Now.AddMinutes(5)
+                };
+                var data = HttpUtility.UrlEncode(JsonConvert.SerializeObject(dataInfo).Encrypt());
+                //var data = JsonConvert.SerializeObject(dataInfo).Encrypt();
+                return Json(new
+                {
+                    data = data
+                });
+            }
+            catch (Exception ex)
+            {
+                return Json(new
+                {
+                    result = ex.Message
+                });
+            }
+        }
+        public ActionResult GenerateOTP(string data)
+        {
+            var dataDecrypt = JsonConvert.DeserializeObject<dynamic>(data.Decrypt());
+            var username = (string)dataDecrypt.UserName;
+            var secretKey = (string)dataDecrypt.SecretKey;
+            var expiredTime = (System.DateTime)dataDecrypt.ExpiredTime;
+            //Sinh ra ảnh QR code
+            var googleOPTAuthenticator = new GoogleTOTP();
+            var qRCodeImage = googleOPTAuthenticator.GenerateImage(secretKey, "SSO.GLOBAL-" + username);
+
+            string data1 = "";
+            //var retVal = new OTPManagerModel();
+            if (expiredTime > System.DateTime.Now)
+            {
+                data1 = qRCodeImage;
+            }
+            else
+            {
+                data1 = "The QRCode is expired.Please contact IT to be supported.";
+            }
+
+            return View("AllocateOTP", null, data1);
         }
         public ActionResult AllocateOTP(int userId)
         {

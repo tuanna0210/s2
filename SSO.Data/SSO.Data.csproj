@@ -75,10 +75,12 @@
   <ItemGroup>
     <Compile Include="ClientDA.cs" />
     <Compile Include="Entities\Client.cs" />
+    <Compile Include="Entities\Membership-GroupRole.cs" />
     <Compile Include="MainDbContext.cs" />
     <Compile Include="Entities\Membership.cs" />
     <Compile Include="Entities\UserClient.cs" />
     <Compile Include="Entities\UserClientId.cs" />
+    <Compile Include="Membership-GroupRoleDA.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="UserClientDA.cs" />
     <Compile Include="MembershipDA.cs" />

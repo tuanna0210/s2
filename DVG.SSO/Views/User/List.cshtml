@@ -3,6 +3,94 @@
     ViewBag.Title = "List";
     Layout = "~/Views/Shared/_Base.cshtml";
 }
+@model List<SSO.Data.Entities.Membership>
 
-<h2>List</h2>
+<div class="crumbs">
+    <ul id="breadcrumbs" class="breadcrumb">
+        <li><a href="/myaccount/dashboard">Dashboard</a></li>
+        <li class="active"><a href="/user/list" title="">User management</a></li>
+    </ul>
+</div>
 
+<div class="widget">
+    <div class="navbar"><div class="navbar-inner"><h6>Table with footer</h6></div></div>
+    <div class="table-overflow">
+        <table class="table table-striped table-bordered">
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>First Name</th>
+                    <th>Last Name</th>
+                    <th>Username</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>@item.Username</td>
+                        <td>Mark</td>
+                        <td>Otto</td>
+                        <td>
+                            <ul class="navbar-icons">
+                                <li><a href="#" class="tip genQRCode" title="" data-original-title="Generate QR code"><i class="icon-plus"></i></a></li>
+                                <li><a href="#" class="tip" title="" data-original-title="View statistics"><i class="icon-reorder"></i></a></li>
+                                <li><a href="#" class="tip" title="" data-original-title="Parameters"><i class="icon-cogs"></i></a></li>
+                            </ul>
+                        </td>
+                    </tr>
+                }
+                
+                
+            </tbody>
+        </table>
+    </div>
+    <div class="table-footer">
+        <div class="pagination">
+            <ul>
+                <li><a href="#">Prev</a></li>
+                <li><a href="#">1</a></li>
+                <li><a href="#">2</a></li>
+                <li class="active"><a href="#">3</a></li>
+                <li><a href="#">4</a></li>
+                <li><a href="#">Next</a></li>
+            </ul>
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+    $( ".genQRCode" ).each(function(index) {
+        $(this).on("click", function(){
+            //$.post("/Account/AllocateOTP1", function () {
+            //    alert("success");
+            //})
+            //    .done(function () {
+            //        alert("second success");
+            //    })
+            //    .fail(function () {
+            //        alert("error");
+            //    })
+            //    .always(function () {
+            //        alert("finished");
+            //    });
+            var obj = {
+                userId : 1 //temp
+            };
+            $.ajax({
+                type: "POST",
+                url: "/Account/AllocateOTP1",
+                //contentType: "application/json; charset=utf-8",
+                data: obj,
+                dataType: "json",
+                success: function (result, status, xhr) {
+                    console.log(result.data);
+                    window.open('/Account/GenerateOTP?data=' + result.data);
+                },
+                error: function (xhr, status, error) {
+                    console.log(error);
+                }
+            });  
+        });
+
+    });
+</script>

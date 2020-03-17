@@ -16,7 +16,7 @@ namespace SSO.Utils
         static readonly int PinModulo = (int)Math.Pow(10, PinLength);
         static readonly System.DateTime UnixEpoch = new System.DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc);
 
-        private static readonly string projectName = "AUTOPORTAL_CRM_NIGE";
+        private static readonly string projectName = "SSO.GLOBAL";
 
         /// <summary>
         ///   Number of intervals that have elapsed.
