@@ -1,0 +1,100 @@
+﻿
+@{
+    ViewBag.Title = "List";
+    Layout = "~/Views/Shared/_Base.cshtml";
+}
+
+@model List<SSO.Data.Entities.Membership>
+<div class="crumbs">
+    <ul id="breadcrumbs" class="breadcrumb">
+        <li><a href="index.html">System</a></li>
+        <li class="active"><a href="calendar.html" title="">Quản lý user</a></li>
+    </ul>
+</div>
+<!-- /breadcrumbs line -->
+<!-- Page header -->
+<div class="page-header">
+    <div class="page-title">
+        <h5>Quản lý user</h5>
+        <span>Danh sách user</span>
+    </div>
+</div>
+
+<div class="widget">
+    <div class="navbar">
+        <div class="navbar-inner"><h6>Users</h6><a role="button" href="/system/user/create" class="btn btn-info" style="float: right"><i class="icon-plus"></i></a></div>
+    </div>
+    <div class="table-overflow">
+        <table class="table table-striped table-bordered">
+            <thead>
+                <tr>
+                    <th>Username</th>
+                    <th>Display name</th>
+                    <th>Email</th>
+                    <th style="width: 50px">Option</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>@item.Username</td>
+                        <td>@item.DisplayName</td>
+                        <td>@item.Email</td>
+                        <td>
+                            <ul class="navbar-icons">
+                                <li><a href="#" class="tip genQRCode" title="" data-original-title="Generate QR code" data-id="@item.Id"><i class="ico-qrcode"></i></a></li>
+                            </ul>
+                        </td>
+                    </tr>
+                }
+
+
+            </tbody>
+        </table>
+    </div>
+    <div class="table-footer">
+        @if (ViewBag.TotalPage > 0)
+        {
+            <div class="pagination">
+                <ul>
+                    @for (int i = 0; i < ViewBag.TotalPage; i++)
+                    {
+                        <li><a href="/System/User/List?p=@(i +1)">@(i +1)</a></li>
+                    }
+
+                </ul>
+            </div>
+        }
+
+    </div>
+</div>
+<script type="text/javascript">
+    $(".genQRCode").each(function (index) {
+        $(this).on("click", function () {
+            var obj = {
+                userId: $(this).attr("data-id")
+            };
+            $.ajax({
+                type: "POST",
+                url: "/Account/AllocateOTP",
+                //contentType: "application/json; charset=utf-8",
+                data: obj,
+                dataType: "json",
+                success: function (result, status, xhr) {
+                    console.log(result.Status);
+                    if (result.Status == 1) {
+                        window.open('/Account/GenerateOTP?data=' + result.Data);
+                    }
+                    else {
+                        alert(result.Data);
+                    }
+                },
+                error: function (xhr, status, error) {
+                    console.log(error);
+                }
+            });
+        });
+
+    });
+</script>

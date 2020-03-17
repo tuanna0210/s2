@@ -21,7 +21,7 @@ namespace SSO.Utils.Commons
                 request.ContentType = string.IsNullOrEmpty(contentType) ? "application/x-www-form-urlencoded" : contentType;
                 request.ContentLength = byteArray.Length;
                 request.KeepAlive = keepAlive;
-                request.Timeout = Timeout.Infinite;
+                request.Timeout = 60000;
                 request.UserAgent = "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/45.0.2454.85 Safari/537.36";
                 ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls;
                 ServicePointManager.ServerCertificateValidationCallback = delegate { return true; };

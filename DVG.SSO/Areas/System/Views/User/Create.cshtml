@@ -1,0 +1,46 @@
+﻿
+@{
+    ViewBag.Title = "Create";
+    Layout = "~/Views/Shared/_Base.cshtml";
+}
+@model DVG.SSO.Models.MembershipCreateModel
+<div class="crumbs">
+    <ul id="breadcrumbs" class="breadcrumb">
+        <li><a href="index.html">System</a></li>
+        <li class="active"><a href="calendar.html" title="">Quản lý user</a></li>
+    </ul>
+</div>
+<!-- /breadcrumbs line -->
+<!-- Page header -->
+<div class="page-header">
+    <div class="page-title">
+        <h5>Quản lý user</h5>
+        <span>Thêm mới user</span>
+    </div>
+</div>
+@using (Html.BeginForm("Create", "User", FormMethod.Post, new { @class = "form-horizontal" }))
+{
+    <div class="tabbable widget">
+        <ul class="nav nav-tabs">
+            <li class="active"><a href="#tab1" data-toggle="tab">Thông tin user</a></li>
+        </ul>
+        <div class="tab-content">
+            <div class="tab-pane active" id="tab1">
+                <div class="well row-fluid">
+                    @Html.EditorFor(model => model.Username)
+                    @Html.EditorFor(model => model.DisplayName)
+                    @Html.EditorFor(model => model.Email)
+                    @Html.EditorFor(model => model.IsAnonymous)
+                    @Html.EditorFor(model => model.IsApproved)
+                    @Html.EditorFor(model => model.IsLockedOut)
+                    @Html.EditorFor(model => model.Comment)
+                </div>
+            </div>
+            <div class="form-actions align-right">
+                <button type="submit" class="btn btn-info">Cập nhật</button>
+                <button type="reset" class="btn">Hoàn tác</button>
+                <a class="btn btn-success" href="/System/user/list">Back</a>
+            </div>
+        </div>
+    </div>
+}

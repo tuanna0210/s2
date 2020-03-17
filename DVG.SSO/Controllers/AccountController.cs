@@ -142,7 +142,7 @@ namespace DVG.SSO.Controllers
 
             return Json(objMsg);
         }
-           
+
         [HttpPost]
         public JsonResult Logincallback(SystemUserLoginItemExtend user)
         {
@@ -152,23 +152,23 @@ namespace DVG.SSO.Controllers
             {
                 if (ModelState.IsValid)
                 {
-                    if(user.SSOType == "Global")
+                    if (user.SSOType == "Global")
                     {
                         //user.Password = user.Password.ToMD5();
                         var error = SystemAuthenticate.Login(user);
                         if (error == SystemCommon.Error.LoginSuccess)
                         {
-                            ////Check OTP
-                            //var userInfo = userDA.GetListByUsername(user.UserName).FirstOrDefault();
-                            //var secretkey = ConfigurationManager.AppSettings["OTPSecretKey"] + userInfo.OtpPrivateKey;
-                            //if (!GoogleTOTP.IsVaLid(secretkey, user.OTP))
-                            //{
-                            //    objMsg.Error = true;
-                            //    objMsg.Title = getMessageError(SystemCommon.Error.InfoIncorrect);
-                            //    //xóa cookie (check OTP phải xử lý sau khi login, vì login xử lý ở dll,nên nếu OTP ko chính xác thì phải xóa cookie
-                            //    FormsAuthentication.SignOut();
-                            //    return Json(objMsg);
-                            //}
+                            //Check OTP
+                            var userInfo = userDA.GetListByUsername(user.UserName).FirstOrDefault();
+                            var secretkey = ConfigurationManager.AppSettings["OTPSecretKey"] + userInfo.OtpPrivateKey;
+                            if (!GoogleTOTP.IsVaLid(secretkey, user.OTP))
+                            {
+                                objMsg.Error = true;
+                                objMsg.Title = getMessageError(SystemCommon.Error.InfoIncorrect);
+                                //xóa cookie (check OTP phải xử lý sau khi login, vì login xử lý ở dll,nên nếu OTP ko chính xác thì phải xóa cookie
+                                FormsAuthentication.SignOut();
+                                return Json(objMsg);
+                            }
 
                             var userClientDA = new UserClientDA();
                             if (flag) //(*)
@@ -205,7 +205,7 @@ namespace DVG.SSO.Controllers
 
                         }
                         else
-                        {                          
+                        {
                             objMsg.Title = getMessageError(error);
                             objMsg.Error = true;
                         }
@@ -216,7 +216,7 @@ namespace DVG.SSO.Controllers
                         user.SecretKey = Security.CreateKey();
                         var ssoVNResponse = JsonConvert.DeserializeObject<Message>(HttpUtils.MakePostRequest(url, JsonConvert.SerializeObject(user), "application/json"));
                         objMsg = ssoVNResponse;
-                    }               
+                    }
                 }
                 else
                 {
@@ -239,7 +239,7 @@ namespace DVG.SSO.Controllers
             }
             else
             {
-                var userClientInfomation = objUserClientIdDA.GetListByUsernameAndDomain(user.UserName,user.Provider);
+                var userClientInfomation = objUserClientIdDA.GetListByUsernameAndDomain(user.UserName, user.Provider);
                 if (userClientInfomation.Count() < 1)
                 {
                     return "101";
@@ -322,7 +322,7 @@ namespace DVG.SSO.Controllers
 
         }
         [HttpPost]
-        public ActionResult AllocateOTP1(int userId)
+        public ActionResult AllocateOTP(int userId)
         {
             try
             {
@@ -342,14 +342,16 @@ namespace DVG.SSO.Controllers
                 //var data = JsonConvert.SerializeObject(dataInfo).Encrypt();
                 return Json(new
                 {
-                    data = data
+                    Status = 1,
+                    Data = data
                 });
             }
             catch (Exception ex)
             {
                 return Json(new
                 {
-                    result = ex.Message
+                    Status = 2,
+                    Data = ex.Message
                 });
             }
         }
@@ -363,61 +365,61 @@ namespace DVG.SSO.Controllers
             var googleOPTAuthenticator = new GoogleTOTP();
             var qRCodeImage = googleOPTAuthenticator.GenerateImage(secretKey, "SSO.GLOBAL-" + username);
 
-            string data1 = "";
+            string result = "";
             //var retVal = new OTPManagerModel();
             if (expiredTime > System.DateTime.Now)
             {
-                data1 = qRCodeImage;
+                result = qRCodeImage;
             }
             else
             {
-                data1 = "The QRCode is expired.Please contact IT to be supported.";
+                result = "The QRCode is expired.Please contact IT to be supported.";
             }
 
-            return View("AllocateOTP", null, data1);
+            return View("AllocateOTP", null, result);
         }
-        public ActionResult AllocateOTP(int userId)
-        {
-            // Cập nhật lại OTP private key cho nhân viên này
-            var user = userDA.GetById(userId);
-            // Sinh mã OTP private key trong bảng user
-            var randomString = StringUtils.RandomString(5);
-            userDA.UpdateOTPPrivateKey(userId, randomString);
+        //public ActionResult AllocateOTP(int userId)
+        //{
+        //    // Cập nhật lại OTP private key cho nhân viên này
+        //    var user = userDA.GetById(userId);
+        //    // Sinh mã OTP private key trong bảng user
+        //    var randomString = StringUtils.RandomString(5);
+        //    userDA.UpdateOTPPrivateKey(userId, randomString);
 
-            var secretKey = ConfigurationManager.AppSettings["OTPSecretKey"] + randomString;
-            var dataInfo = new
-            {
-                UserName = user.Username,
-                SecretKey = secretKey,
-                ExpiredTime = System.DateTime.Now.AddMinutes(5)
-            };
-            //var data = HttpUtility.UrlEncode(JsonConvert.SerializeObject(dataInfo).Encrypt());
-            var data = JsonConvert.SerializeObject(dataInfo).Encrypt();
-            //var link = string.Format("/User/ShowQRCode?data={0}", data);
-            //var fullLink = AppSettings.Instance.GetString("ServerDomain").ToString() + link;
-            //data = "%2bZr86lkPS9rsBTjBmkW9kRVQm%2f4N%2b7JapCI9l0HNN2EVjKb0VM351xz20ImAlJrRv0TVXwL2FW9mXuVtLijOXo8%2b87jARoNRMAIr5LFQYKfX95STJdD%2f2q8qttKlWIrYJ%2b4Kf7%2bupHZtEAwV%2b%2bWp%2bv9aNV%2b8QH14VHB1A27WVDo%3d";
-            var test = data.Decrypt();
-            var dataDecrypt = JsonConvert.DeserializeObject<dynamic>(data.Decrypt());
-            var username = (string)dataDecrypt.UserName;
-            var secretKey1 = (string)dataDecrypt.SecretKey;
-            var expiredTime = (System.DateTime)dataDecrypt.ExpiredTime;
-            //Sinh ra ảnh QR code
-            var googleOPTAuthenticator = new GoogleTOTP();
-            var qRCodeImage = googleOPTAuthenticator.GenerateImage(secretKey, "AUTOPORTAL.CRM.NIGE-" + "temp");
+        //    var secretKey = ConfigurationManager.AppSettings["OTPSecretKey"] + randomString;
+        //    var dataInfo = new
+        //    {
+        //        UserName = user.Username,
+        //        SecretKey = secretKey,
+        //        ExpiredTime = System.DateTime.Now.AddMinutes(5)
+        //    };
+        //    //var data = HttpUtility.UrlEncode(JsonConvert.SerializeObject(dataInfo).Encrypt());
+        //    var data = JsonConvert.SerializeObject(dataInfo).Encrypt();
+        //    //var link = string.Format("/User/ShowQRCode?data={0}", data);
+        //    //var fullLink = AppSettings.Instance.GetString("ServerDomain").ToString() + link;
+        //    //data = "%2bZr86lkPS9rsBTjBmkW9kRVQm%2f4N%2b7JapCI9l0HNN2EVjKb0VM351xz20ImAlJrRv0TVXwL2FW9mXuVtLijOXo8%2b87jARoNRMAIr5LFQYKfX95STJdD%2f2q8qttKlWIrYJ%2b4Kf7%2bupHZtEAwV%2b%2bWp%2bv9aNV%2b8QH14VHB1A27WVDo%3d";
+        //    var test = data.Decrypt();
+        //    var dataDecrypt = JsonConvert.DeserializeObject<dynamic>(data.Decrypt());
+        //    var username = (string)dataDecrypt.UserName;
+        //    var secretKey1 = (string)dataDecrypt.SecretKey;
+        //    var expiredTime = (System.DateTime)dataDecrypt.ExpiredTime;
+        //    //Sinh ra ảnh QR code
+        //    var googleOPTAuthenticator = new GoogleTOTP();
+        //    var qRCodeImage = googleOPTAuthenticator.GenerateImage(secretKey, "AUTOPORTAL.CRM.NIGE-" + "temp");
 
-            string data1 = "";
-            //var retVal = new OTPManagerModel();
-            if (expiredTime > System.DateTime.Now)
-            {
-                data1 = qRCodeImage;
-            }
-            else
-            {
-                data1 = "The QRCode is expired.Please contact IT to be supported.";
-            }
+        //    string data1 = "";
+        //    //var retVal = new OTPManagerModel();
+        //    if (expiredTime > System.DateTime.Now)
+        //    {
+        //        data1 = qRCodeImage;
+        //    }
+        //    else
+        //    {
+        //        data1 = "The QRCode is expired.Please contact IT to be supported.";
+        //    }
 
-            return View("AllocateOTP", null,data1);
-        }
-        
-    }  
+        //    return View("AllocateOTP", null, data1);
+        //}
+
+    }
 }

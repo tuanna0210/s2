@@ -13,7 +13,7 @@ namespace SSO.BLL
     public class SystemUserBLL : IUserService
     {
         private MembershipDA userDA = new MembershipDA();
-        private Membership_GroupRoleDA membership_GroupRoleDA = new Membership_GroupRoleDA();
+        private UserRoleDA userRoleDA = new UserRoleDA();
         public string GetUserNameByID(int userid)
         {
             return userDA.GetById(userid).DisplayName;
@@ -41,7 +41,7 @@ namespace SSO.BLL
 
         public Membership GetUser(string account, string password, ref SystemCommon.Error error)
         {
-            var user = userDA.GetListBySecurity(account,password).FirstOrDefault();
+            var user = userDA.GetListBySecurity(account, password).FirstOrDefault();
 
             if (user == null)
             {
@@ -107,17 +107,10 @@ namespace SSO.BLL
             }
             var userPrincipal = new UserPrincipal();
 
-            if (user != null && !user.IsLockedOut) 
+            if (user != null && !user.IsLockedOut)
             {
-                List<int> lstRole = new List<int>();
-                var listGroupByUser = membership_GroupRoleDA.GetListByUserId(user.Id);
-                //foreach (var item in user.cms_GroupRoles)
-                //{
-                //    if (item.cms_Roles.Count > 0)
-                //    {
-                //        lstRole.AddRange(item.cms_Roles.Select(p => p.ID));
-                //    }
-                //}
+                var listRoleByUser = userRoleDA.GetListByUserId(user.Id);
+
                 userPrincipal.ID = user.Id;
                 userPrincipal.FullName = user.DisplayName;
                 userPrincipal.Email = user.Email;
@@ -125,7 +118,7 @@ namespace SSO.BLL
                 userPrincipal.Password = userLogin.Password;
                 userPrincipal.Remember = userLogin.Remember;
                 userPrincipal.Avatar = string.IsNullOrEmpty(user.LoweredUserName) ? Notify.NoImage : user.LoweredUserName;
-                //userPrincipal.RoleIDs = lstRole.Distinct().ToList();
+                userPrincipal.RoleIDs = listRoleByUser.Select(x=>x.Role).Distinct().ToList();
             }
             return userPrincipal;
         }
@@ -144,9 +137,38 @@ namespace SSO.BLL
         {
             throw new NotImplementedException();
         }
-        public List<Membership> GetUsers()
+        public List<Membership> GetUsers(int pageIndex, int pageSize)
         {
-            return userDA.Search();
+            return userDA.Search(pageIndex, pageSize);
+        }
+        public int SearchGetTotalRow()
+        {
+            return userDA.GetTotalRowFromSearch();
+        }
+        public Message Create(Membership model)
+        {
+            Message result = new Message();
+            var userInfo = userDA.GetListByUsername(model.Username); //temp
+            if(userInfo != null && userInfo.Count > 0)
+            {
+                result.Error = true;
+                result.Title = "User đã tồn tại";
+            }
+            else
+            {
+                model.Password = Common.GetMd5x2("123456");
+                model.LoweredUserName = string.Empty;
+                model.CreatedDate = DateTime.Now;
+                model.LastLoginDate = model.CreatedDate;
+                model.LastPasswordChangedDate = model.CreatedDate;
+                model.LastLockoutDate = model.CreatedDate;
+                model.FailedPasswordAttemptCount = 0;
+                model.HashCode = Common.GetMd5x2(model.Username + model.Password);
+                userDA.Insert(model);
+                result.Error = false;
+                result.Title = Notify.AddSuccess + model.Username;
+            }
+            return result;
         }
     }
 }

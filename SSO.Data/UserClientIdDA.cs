@@ -11,12 +11,20 @@ namespace SSO.Data
     {
         public List<UserClientId> GetListByUsernameAndDomain(string username, string domain)
         {
-            using (var context = MainDbContext.SSODB())
+            try
             {
-                return context.StoredProcedure("userclientid_getbyusernameanddomain")
-                    .Parameter("_username", username)
-                    .Parameter("_domain", domain)
-                    .QueryMany<UserClientId>();
+                using (var context = MainDbContext.SSODB())
+                {
+                    return context.StoredProcedure("userclientid_getbyusernameanddomain")
+                        .Parameter("_username", username)
+                        .Parameter("_domain", domain)
+                        .QueryMany<UserClientId>();
+                }
+            }
+            catch(Exception ex)
+            {
+                string a = "dd";
+                return null;
             }
         }
     }

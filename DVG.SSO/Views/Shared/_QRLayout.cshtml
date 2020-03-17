@@ -31,32 +31,11 @@
 </head>
 <body>
     <!-- Fixed top -->
-    @{var _User = (User as MvcAuthenication.UserPrincipal);}
 
     <div id="top">
         <div class="fixed">
             <a href="index.html" title="" class="logo"><img src="~/Resources/img/logo.png" alt="" /></a>
-            @if (_User.IsInRole(1))
-            {
-                <ul class="top-menu" style="float: left; margin-left: 50px; border: none">
-                    <li class="dropdown" style="border: none">
-                        <a class="user-menu" data-toggle="dropdown" style="border: none"><span>Quản lý<b class="caret"></b></span></a>
-                        <ul class="dropdown-menu">
-                            <li><a href="/System/User/List" title=""><i class="icon-user"></i>Quản lý user</a></li>
-                        </ul>
-                    </li>
-                </ul>
-            }
-
-            <ul class="top-menu">
-                <li class="dropdown">
-                    <a class="user-menu" data-toggle="dropdown"><img src="@_User.Avatar" alt="" /><span>@User.Identity.Name<b class="caret"></b></span></a>
-                    <ul class="dropdown-menu">
-                        <li><a href="/MyAccount/ChangePassword" title=""><i class="icon-key"></i>Đổi mật khẩu</a></li>
-                        <li><a href="/Account/Logout" title=""><i class="icon-signout"></i>Đăng xuất</a></li>
-                    </ul>
-                </li>
-            </ul>
+            
         </div>
     </div>
     <!-- /fixed top -->

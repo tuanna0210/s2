@@ -49,6 +49,7 @@
     <Compile Include="Commons\LogMan.cs" />
     <Compile Include="Commons\StringUtils.cs" />
     <Compile Include="Commons\Utility.cs" />
+    <Compile Include="Enums\Role.cs" />
     <Compile Include="Message.cs" />
     <Compile Include="Notify.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

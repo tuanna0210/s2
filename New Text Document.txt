@@ -1,124 +1,18 @@
-DECLARE _sqlcommand VARCHAR;
- _sqlwhere  VARCHAR;
- _sqltemp VARCHAR;
- _sqlorder VARCHAR;
 BEGIN
-  _sqlwhere = '';
-  _sqltemp ='';
-  _sqlorder ='';
-  _sqlcommand = 'SELECT  cust.id
-                        , cust.name
-                        , cust.phonenumber
-                        , cust.email
-                        , cust.note
-                        , cust.assigneename
-                        , cust.blockstatus
-                        , cust.blockreasondescription
-                        , cust.blockreasontype
-                        ,   cl.totallisting
-                        , cust.cityregion
-                        , cust.lastupdateddate
-                        , cust.isfavorite
-                 FROM      public.customer AS cust   
-  					LEFT JOIN public.customerlisting AS cl ON cust.adminid = cl.adminid  ';      
-  IF _filterkeyword <> '' THEN _sqltemp =  ' (lower(cust.name) LIKE (''%'' || $1 || ''%'') OR cust.email  LIKE (''%'' || $1 || ''%'') OR cust.phonenumber = $1) ';
-  ELSE _sqltemp = '';
-  END IF;
-  
-  _sqlwhere = _sqlwhere || _sqltemp;
-  
-  IF _cityregion	<> 0  THEN _sqltemp =  ' (cust.cityregion = $2)';
-  ELSE _sqltemp ='';
-  END IF;
-  
-  IF _sqltemp <> '' AND _sqlwhere <> '' THEN _sqlwhere = _sqlwhere || ' AND ' || _sqltemp;
-  ELSE _sqlwhere = _sqlwhere || _sqltemp;
-  END IF;     
-  
-  IF _customertype  <> 0  THEN _sqltemp = ' (cust.customertype = $3)';
-  ELSE _sqltemp = '' ; 
-  END IF;
-  
-  IF _sqltemp <> '' AND _sqlwhere <> '' THEN _sqlwhere = _sqlwhere || ' AND ' || _sqltemp;
-  ELSE	_sqlwhere = _sqlwhere || _sqltemp;
-  END IF;
-  
-  IF _group  <> 0 THEN _sqltemp = ' (cust."group" = $4)';
-  ELSE _sqltemp = '' ; 
-  END IF;
-  
-  IF _sqltemp <> '' AND _sqlwhere <> '' THEN _sqlwhere = _sqlwhere || ' AND ' || _sqltemp;
-  ELSE	_sqlwhere = _sqlwhere || _sqltemp;
-  END IF;
-   
-  IF _assigneeid <> 0	  THEN _sqltemp = ' (cust.assigneeid = $5)';
-  ELSE _sqltemp ='';
-  END IF;
-  
-  IF _sqltemp <> '' AND _sqlwhere <> '' THEN _sqlwhere = _sqlwhere || ' AND ' || _sqltemp;
-  ELSE	_sqlwhere = _sqlwhere || _sqltemp;
-  END IF; 
-  
-  _sqltemp = ' (cust.createddate BETWEEN $6 AND $7 ) AND ( cust.status = $8 ) ';
-  IF _sqlwhere <> '' THEN _sqlwhere = _sqlwhere || ' AND ' || _sqltemp;
-  ELSE	_sqlwhere = _sqlwhere || _sqltemp;
-  END IF;
-  
-  IF _nooflistingfrom = 0 THEN _sqltemp = ' (cl.totallisting IS NULL OR cl.totallisting >= 0)';
-  ELSIF  _nooflistingfrom <> -1 THEN _sqltemp = ' (cl.totallisting >= $9)';
-  ELSE _sqltemp ='';
-  END IF;
-  
-  IF _sqltemp <> '' AND _sqlwhere <> '' THEN _sqlwhere = _sqlwhere || ' AND ' || _sqltemp;
-  ELSE	_sqlwhere = _sqlwhere || _sqltemp;
-  END IF;
-  
-  IF _nooflistingto = 1 THEN _sqltemp = ' (cl.totallisting IS NULL OR cl.totallisting <= 1)';
-  ELSIF _nooflistingto <> -1	  THEN _sqltemp = ' (cl.totallisting <= $10)';
-  ELSE _sqltemp ='';
-  END IF;
-  
-  IF _sqltemp <> '' AND _sqlwhere <> '' THEN _sqlwhere = _sqlwhere || ' AND ' || _sqltemp;
-  ELSE	_sqlwhere = _sqlwhere || _sqltemp;
-  END IF;
-
-  IF _lastupdatedatefrom IS NULL THEN _sqltemp = '';
-  ELSE _sqltemp = '  (cust.lastupdateddate >= $11)';
-  END IF;
-  
-  IF _sqltemp <> '' AND _sqlwhere <> '' THEN _sqlwhere = _sqlwhere || ' AND ' || _sqltemp;
-  ELSE	_sqlwhere = _sqlwhere || _sqltemp;
-  END IF;
-  
-  IF _lastupdatedateto IS NULL THEN _sqltemp = '';
-  ELSE _sqltemp = '  (cust.lastupdateddate <= $12)';
-  END IF;
-  
-  IF _sqltemp <> '' AND _sqlwhere <> '' THEN _sqlwhere = _sqlwhere || ' AND ' || _sqltemp;
-  ELSE	_sqlwhere = _sqlwhere || _sqltemp;
-  END IF;
-  
-  IF _isshowblocked THEN _sqltemp = '';
-  ELSE _sqltemp  =' (cust.blockstatus <> 2 )';
-  END IF;
-  
-  IF _sqltemp <> '' AND _sqlwhere <> '' THEN _sqlwhere = _sqlwhere || ' AND ' || _sqltemp;
-  ELSE	_sqlwhere = _sqlwhere || _sqltemp;
-  END IF;
-  
-  IF _order = 1 THEN _sqlorder = ' ORDER BY (cl.totallisting IS NULL) DESC , cl.totallisting ASC ';
-  ELSIF _order = 2 THEN _sqlorder = ' ORDER BY (cl.totallisting IS NULL) ASC ,cl.totallisting DESC ';
-  ELSIF _customerstatus =1 THEN  _sqlorder = ' ORDER BY cust.id DESC ';
-  ELSE _sqlorder = ' ORDER BY cust.isfavorite DESC, cust.id DESC ';
-  END IF;
-  
-  IF _sqlwhere <> '' THEN _sqlcommand = _sqlcommand || ' WHERE ' || _sqlwhere || _sqlorder || ' OFFSET ($13 -1) * $14 LIMIT $14';
-  ELSE _sqlcommand = _sqlcommand  || _sqlorder ||' DESC OFFSET ($13 -1) * $14 LIMIT $14';
-  END IF;
-   
-        	
-  RETURN QUERY
-  EXECUTE _sqlcommand USING _filterkeyword,_cityregion,_customertype,_group,_assigneeid,_creationdatefrom,_creationdateto,_customerstatus,_nooflistingfrom,_nooflistingto,_lastupdatedatefrom,_lastupdatedateto,_pageindex,_pagesize;
-  
-  
+  RETURN QUERY	
+  SELECT 	usr.id
+  		,	usr.username
+        ,	usr.password
+        ,	usr.fullname
+        ,	usr.createddate
+        ,	usr.createdby
+        ,	usr.status
+        ,	usr.email
+        ,	usr.phonenumber
+        ,	usr.birthday
+        ,	usr.cityid
+        ,	usr.address
+        ,	usr.note
+  FROM	public.users usr       
+  WHERE usr.id <> (_id) AND (lower(usr.email) = _email OR lower(usr.phonenumber) = _phonenumber OR lower(usr.username) = _username);
 END;

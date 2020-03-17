@@ -9,9 +9,6 @@
         <li><a href="/myaccount/dashboard">Dashboard</a></li>
     </ul>
 </div>
-@Html.ActionLink("Account", "AllocateOTP", new { controller = "Account" }, new { userId = 123, target = "_blank" })
-<a href="/Account/AllocateOTP?userId=123">Test</a>
-<a href="#" class="creatOTP">Test 123</a>
 <!-- /breadcrumbs line -->
 <div class="actions-wrapper">
     <div class="actions" data-easytabs="true" style="">
@@ -24,11 +21,3 @@
         </div>
     </div>
 </div>
-<script type="text/javascript">
-    $(".creatOTP").each(() => {
-        $(this).off('click');
-        $(this).on('click', function () {
-            alert('dđ');
-        });
-    });
-</script>
